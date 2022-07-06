@@ -18,9 +18,10 @@
     <module>redpacket</module>
     <module>concurrency</module>
     <module>algorithm</module>
-    <module>distribution</module>
+    <module>middleware</module>
     <module>changingedu</module>
       <module>netty</module>
+      <module>vipshop</module>
   </modules>
   <properties>
   </properties>
