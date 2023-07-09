@@ -1,8 +1,34 @@
 package com.javalearning.utils;
 
+import com.javalearning.element.ListNode;
 import com.javalearning.element.TreeNode;
 
 public class TestCases {
+    //链表
+    public static ListNode getTwoNodes(){
+        ListNode head = new ListNode(2);
+        head.next = new ListNode(3);
+        return head;
+    }
+    public static ListNode getNodesList(int nodesCount){
+        ListNode tenNodes = new ListNode(0);
+        ListNode tail = tenNodes;
+        for (int i = 1; i < nodesCount; i++) {
+            tail.next = new ListNode(i);
+            tail = tail.next;
+        }
+        return tenNodes;
+    }
+    public static ListNode getNodesList(int[] nums){
+        ListNode head = new ListNode(nums[0]);
+        ListNode cursor = head;
+        for (int i = 1; i < nums.length; i++) {
+            cursor.next = new ListNode(nums[i]);
+            cursor = cursor.next;
+        }
+        return head;
+    }
+
     //股票最大利润问题
     public static int[] prices0 = {3,2,5,6,10,9,7,11,14};//15:
     public static int[] prices1 = {7,1,5,3,6,4};//7:1-5,3-6
