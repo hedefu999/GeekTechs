@@ -20,6 +20,9 @@ public class TestCases {
         return tenNodes;
     }
     public static ListNode getNodesList(int[] nums){
+        if (nums == null || nums.length == 0){
+            return null;
+        }
         ListNode head = new ListNode(nums[0]);
         ListNode cursor = head;
         for (int i = 1; i < nums.length; i++) {
@@ -27,6 +30,13 @@ public class TestCases {
             cursor = cursor.next;
         }
         return head;
+    }
+    public static ListNode[] getNodeLists(int[][] nums){
+        ListNode[] listNodes = new ListNode[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            listNodes[i] = getNodesList(nums[i]);
+        }
+        return listNodes;
     }
 
     //股票最大利润问题
