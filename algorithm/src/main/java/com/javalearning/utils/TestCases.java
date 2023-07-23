@@ -38,6 +38,20 @@ public class TestCases {
         }
         return listNodes;
     }
+    public static void buildIntersectList(ListNode la, ListNode lb, int jointAIndex, int joinBIndex){
+        if (jointAIndex == -1 || joinBIndex == -1){
+            return;
+        }
+        ListNode dummyA = new ListNode(-99);dummyA.next=la;
+        ListNode dummyB = new ListNode(-99);dummyB.next=lb;
+        for (int i = 0; i < jointAIndex; i++) {
+            dummyA = dummyA.next;
+        }
+        for (int i = 0; i < joinBIndex; i++) {
+            dummyB = dummyB.next;
+        }
+        dummyA.next=dummyB.next;
+    }
 
     //股票最大利润问题
     public static int[] prices0 = {3,2,5,6,10,9,7,11,14};//15:

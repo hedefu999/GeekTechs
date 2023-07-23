@@ -7,7 +7,7 @@ public class ListNode {
 
     @Override
     public String toString() {
-        return val+"";
+        return val+"->"+next;
     }
 
     public static ListNode getNodeList(int count){

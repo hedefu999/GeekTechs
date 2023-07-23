@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class _01LinkedList {
-
+//region stage I 基本技巧
 /* +LC21 合并两个有序链表
 自己的解法，内存占用高点，性能100%
 递归解法
@@ -328,32 +328,150 @@ head = [1,2,3,4,5], n = 2 -> [1,2,3,5]
     return dummy.next;
 }
 
-
-
-    //@number 2
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode l3 = new ListNode(0), l3head = l3;
-        int over10 = 0;
-        while(l1 != null || l2 != null){
-            int sum = (l1==null?0:l1.val) + (l2==null?0:l2.val) + l3.val;
-            if(sum >= 10){
-                l3.val = sum - 10;
-                over10 = 1;
-            }else{
-                l3.val = sum;
-                over10 = 0;
-            }
-            l1 = l1==null?null:l1.next;
-            l2 = l2==null?null:l2.next;
-            if(l1 != null || l2 != null || over10 != 0){
-                //l1==null && l2 == null &&
-                l3.next = new ListNode(over10);
-                l3 = l3.next;
-            }
-        }
-        return l3head;
+/* LC876 链表的中间节点
+head = [1,2,3,4,5] 输出：[3,4,5] 解释：链表只有一个中间结点，值为 3 。
+head = [1,2,3,4,5,6] 输出：[4,5,6] 解释：该链表有两个中间结点，值分别为 3 和 4 ，返回第二个结点。
+***/static ListNode middleNode(ListNode head) {
+    ListNode first=head;ListNode second=head;
+    while (second != null && second.next != null){
+        first = first.next;
+        second = second.next.next;
     }
-    public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+    return first;
+}
+/* LC141 环形链表 判断是否有环
+***/static boolean hasCycle(ListNode head) {
+    ListNode fast = head;
+    ListNode slow = head;
+    while (fast != null && fast.next != null){
+        fast = fast.next.next;
+        slow = slow.next;
+// 注意不要使用val比较，允许节点的val相同
+//        if (fast!=null && fast.val == slow.val){
+//            return true;
+//        }
+        if (fast == slow){
+            return true;
+        }
+    }
+    return false;
+}
+/* LC142 环形链表II 返回环的起点
+相关数学证明：假设相遇点距离环起点 m，慢游标走了k步，快游标走了2k步，则环起点距离head k-m，环内相遇点距离环起点也有k-m，再各一步一步走就能相遇在环起点
+***/static ListNode detectCycle(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+    int index=0;
+    while (fast != null && fast.next != null){
+        slow = slow.next;index++;
+        fast = fast.next.next;
+        if (fast == slow){
+            fast=head;
+            while (fast != slow){
+                slow = slow.next;
+                fast = fast.next;
+            }
+            return fast;
+        }
+    }
+    return null;
+}
+/* LC160 相交链表  相交链表，起点不同，构造相同长度让它们相遇
+测试用例
+1. a1-a2-a3-a4-a5-c1; b1-c1;
+2. c1; c1;
+3. a1-c1;c1;
+ListNode la = TestCases.getNodesList(new int[]{1,9,1,2,4});
+ListNode lb = TestCases.getNodesList(new int[]{3,2,4});
+ListNode l1 = TestCases.getNodesList(new int[]{3,2});
+ListNode l2 = TestCases.getNodesList(new int[]{2});
+ListNode l3 = TestCases.getNodesList(new int[]{3});
+ListNode l4 = TestCases.getNodesList(new int[]{3});
+
+TestCases.buildIntersectList(la,lb,-1, -1);
+System.out.println(getIntersectionNode(la,lb));
+TestCases.buildIntersectList(la,lb,3, 1);
+System.out.println(getIntersectionNode(la,lb));
+TestCases.buildIntersectList(l1,l2,1, 0);
+System.out.println(getIntersectionNode(l1,l2));
+//由于java的引用传递，这种相交链表无法构建,将l3传两遍吧，没必要走构建方法
+TestCases.buildIntersectList(l3,l4,0, 0);
+System.out.println(getIntersectionNode(l3,l4));
+
+证明：
+a: a1-a2-a3-c1-c2
+b: b1-b2-c1-c2
+需要双指针解决，一个链表走完走到另一个链表上可以解决问题，但两个指针的走速不需要有差异
+这样相当于两个链表连起来，这样能保证两个指针总能同时到达 c1 节点
+a1-a2-a3-c1-c2-b1-b2-c1...
+b1-b2-c1-c2-a1-a2-a3-c1...
+a1 a2 a3 b1 b2
+b1 b2 a1 a2 a3
+***/static ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    ListNode up = headA;
+    ListNode down = headB;
+    //可以设置标记位保持代码简洁，多花费内存
+    boolean upSwitch = false;
+    boolean downSwitch = false;
+    //至多变量两轮
+    while (up != null && down != null){
+        if (up == down){
+            return up;
+        }
+        up = up.next;down=down.next;
+        //有人到头,就换头
+        if (up == null && !upSwitch){
+            up = headB;
+            upSwitch=true;
+        }
+        if (down == null && !downSwitch){
+            down = headA;
+            downSwitch = true;
+        }
+    }
+    return null;
+}//推荐写法，巧妙利用 null == null ，返回任意一个null即可。将null作为不相交链表的交点（平行线相较于无穷远？）
+static ListNode getIntersectionNode2(ListNode headA, ListNode headB){
+    ListNode p1 = headA, p2 = headB;
+    while (p1 != p2) {
+        // p1 走一步，如果走到 A 链表末尾，转到 B 链表
+        if (p1 == null) p1 = headB;
+        else            p1 = p1.next;
+        // p2 走一步，如果走到 B 链表末尾，转到 A 链表
+        if (p2 == null) p2 = headA;
+        else            p2 = p2.next;
+    }
+    return p1;
+}//也可以让两个链表各自成环，各自delta=1遍历，相交链表总会走到同一节点，但运算完要改回链表原状态
+
+//endregion
+
+//region stage II 巩固
+/* LC2 两数相加
+***/static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode l3 = new ListNode(0), l3head = l3;
+    int over10 = 0;
+    while(l1 != null || l2 != null){
+        int sum = (l1==null?0:l1.val) + (l2==null?0:l2.val) + l3.val;
+        if(sum >= 10){
+            l3.val = sum - 10;
+            over10 = 1;
+        }else{
+            l3.val = sum;
+            over10 = 0;
+        }
+        l1 = l1==null?null:l1.next;
+        l2 = l2==null?null:l2.next;
+        if(l1 != null || l2 != null || over10 != 0){
+            //l1==null && l2 == null &&
+            l3.next = new ListNode(over10);
+            l3 = l3.next;
+        }
+    }
+    return l3head;
+}
+/* LC1 两数之和
+***/static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
         ListNode l3 = new ListNode(0), l3head = l3;
         while(l1 != null || l2 != null){
             int sum = (l1==null?0:l1.val) + (l2==null?0:l2.val) + l3.val;
@@ -368,9 +486,37 @@ head = [1,2,3,4,5], n = 2 -> [1,2,3,5]
         return l3head;
     }
 
-    public static void main(String[] args) {
-        ListNode head = TestCases.getNodesList(new int[]{1,2,3,4,5});
-        PrintUtils.printListNodes(removeNthFromEnd(head, 4));
+/* LC83 删除升序链表中的重复元素
+head = [1,1,2]  输出：[1,2]
+head = [1,1,2,3,3]  输出：[1,2,3]
+***/static ListNode deleteDuplicates(ListNode head) {
+    if (head==null)return null;
+    ListNode slow = new ListNode(-99);slow.next=head;
+    ListNode fast = head;
+    while (fast != null){//相等和不相等时都可以移除节点，这里的写法可以保证移除的节点不会组成链，更容易被回收
+        if (slow.val == fast.val){
+            fast = fast.next;
+            slow.next.next = null;
+            slow.next = fast;
+        }else {
+            slow = slow.next;
+            fast = fast.next;
+        }
+    }
+    return head;
+}
 
+//endregion
+
+//region stage III
+
+//endregion
+
+
+
+    public static void main(String[] args) {
+        ListNode la = TestCases.getNodesList(new int[]{});
+        ListNode lb = TestCases.getNodesList(new int[]{3,2,4});
+        System.out.println(deleteDuplicates(la));
     }
 }
