@@ -1,1 +1,0 @@
-INSERT INTO chapter5.female_health_form (id, emp_id, heart, uterus) VALUES (1, 2, '67', 'normal');
