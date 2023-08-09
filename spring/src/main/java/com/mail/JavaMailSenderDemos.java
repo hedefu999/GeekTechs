@@ -1,4 +1,4 @@
-package com.changingedu;
+package com.mail;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
