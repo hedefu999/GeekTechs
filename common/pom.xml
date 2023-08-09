@@ -11,6 +11,11 @@
 
     <artifactId>common</artifactId>
 
+    <properties>
+      <spring.version>5.1.4.RELEASE</spring.version>
+      <spring.old.version>4.3.16.RELEASE</spring.old.version>
+    </properties>
+
     <dependencies>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -115,40 +120,40 @@
       </dependency>
   
       <!-- ================== spring相关依赖 -->
-      <!--<dependency>-->
-        <!--<groupId>org.springframework</groupId>-->
-        <!--<artifactId>spring-core</artifactId>-->
-        <!--<version>5.1.4.RELEASE</version>-->
-      <!--</dependency>-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
-        <version>5.1.4.RELEASE</version>
+        <version>${spring.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-aop</artifactId>
-        <version>5.1.4.RELEASE</version>
+        <version>${spring.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-beans</artifactId>
-        <version>5.1.4.RELEASE</version>
+        <version>${spring.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
-        <version>4.3.12.RELEASE</version>
+        <version>${spring.old.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-aspects</artifactId>
-        <version>5.1.4.RELEASE</version>
+        <version>${spring.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-jdbc</artifactId>
-        <version>4.3.16.RELEASE</version>
+        <version>${spring.old.version}</version>
       </dependency>
       <dependency>
         <groupId>com.alibaba</groupId>
@@ -163,12 +168,12 @@
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
-        <version>4.3.16.RELEASE</version>
+        <version>${spring.old.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-webmvc</artifactId>
-        <version>4.3.16.RELEASE</version>
+        <version>${spring.old.version}</version>
       </dependency>
 
       <!--在springMVC中使用注解验证时要用到这些依赖-->
