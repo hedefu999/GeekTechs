@@ -1,7 +1,6 @@
 package com.ssmr.c12;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -88,7 +88,7 @@ public class OperateDBBySQLsWithCallback {
     private class ConnCallback implements ConnectionCallback<Integer>{
         private List<String> sqls;
         private ConnCallback(String... sqlArray){
-            this.sqls = Lists.newArrayList(sqlArray);
+            this.sqls = Arrays.asList(sqlArray);
         }
 
         @Override
