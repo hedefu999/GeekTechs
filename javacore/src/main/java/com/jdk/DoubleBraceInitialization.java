@@ -1,4 +1,4 @@
-package com.ssmr.demos;
+package com.jdk;
 
 import java.util.HashMap;
 import java.util.Map;
