@@ -1,6 +1,6 @@
 package com.misc;
 
-import com.utils.SerializeUtils;
+import com.jdk.SerializeUtils;
 import lombok.Data;
 
 import java.io.*;

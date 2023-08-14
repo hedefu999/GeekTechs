@@ -12,15 +12,16 @@
     <artifactId>common</artifactId>
 
     <properties>
-      <spring.version>5.1.4.RELEASE</spring.version>
-      <spring.old.version>4.3.16.RELEASE</spring.old.version>
+      <guava>27.0-jre</guava>
+      <fastjson>1.2.83</fastjson>
+      <guava-retrying>2.0.0</guava-retrying>
     </properties>
 
     <dependencies>
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>27.0-jre</version>
+        <version>${guava}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -36,7 +37,7 @@
       <dependency>
           <groupId>com.alibaba</groupId>
           <artifactId>fastjson</artifactId>
-          <version>1.2.60</version>
+          <version>${fastjson}</version>
       </dependency>
       <dependency>
         <groupId>com.google.code.gson</groupId>
@@ -119,77 +120,6 @@
         <version>3.4.6</version>
       </dependency>
 
-      <!-- ================== spring相关依赖 -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aop</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-beans</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.old.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-aspects</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-jdbc</artifactId>
-        <version>${spring.old.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.alibaba</groupId>
-        <artifactId>druid</artifactId>
-        <version>1.0.25</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mybatis</groupId>
-        <artifactId>mybatis-spring</artifactId>
-        <version>1.3.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.old.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.old.version}</version>
-      </dependency>
-
-      <!--在springMVC中使用注解验证时要用到这些依赖-->
-      <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
-      <dependency>
-        <groupId>javax.validation</groupId>
-        <artifactId>validation-api</artifactId>
-        <version>2.0.1.Final</version>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>6.0.17.Final</version>
-      </dependency>
-
       <!--研究springMVC视图时使用xlsx视图功能-->
       <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
       <dependency>
@@ -234,6 +164,11 @@
         <version>4.5.6</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.github.rholder</groupId>
+        <artifactId>guava-retrying</artifactId>
+        <version>${guava-retrying}</version>
+      </dependency>
 
     </dependencies>
 </project>

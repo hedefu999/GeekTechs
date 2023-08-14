@@ -2,7 +2,7 @@ package com.concurrency.javadxcbchxjs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
