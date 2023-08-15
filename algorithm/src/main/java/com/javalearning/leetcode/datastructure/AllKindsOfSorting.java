@@ -1,8 +1,5 @@
 package com.javalearning.leetcode.datastructure;
 
-import com.google.common.base.Joiner;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -44,10 +41,6 @@ public class AllKindsOfSorting {
         //heapSort(nums2);
         //System.out.println(Arrays.toString(nums));
         //System.out.println(Arrays.toString(nums2));
-
-        ArrayList<Object> objects = new ArrayList<>();
-        String join = Joiner.on(",").join(objects);
-        System.out.println(join.length());
     }
 
     /**

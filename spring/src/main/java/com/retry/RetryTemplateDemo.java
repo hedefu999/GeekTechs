@@ -16,6 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Spring Retry是从Spring Batch独立出来的一个功能，已经广泛应用于Spring Batch,Spring Integration, Spring for Apache Hadoop等Spring项目。
+ * 保证容错性，可用性，一致性等。一般用来应对外部系统的一些不可预料的返回、异常等，特别是网络延迟，中断等情况。
+ * 还有在现在流行的微服务治理框架中，通常都有自己的重试与超时配置，比如dubbo可以设置retries=1，timeout=500调用失败只重试1次，
+ * 超过500ms调用仍未返回则调用失败。如果我们要做重试，要为特定的某个操作做重试功能，则要硬编码，重复开发效率低下
+ */
 @Slf4j
 public class RetryTemplateDemo {
     /**

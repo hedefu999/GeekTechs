@@ -1,8 +1,5 @@
 package com.ssmr.txpractice.propagation;
 
-import com.ssmr.txpractice.mapper.RoleMapper;
-import com.ssmr.txpractice.mapper.StudentMapper;
-import com.ssmr.txpractice.mapper.UserMapper;
 import com.ssmr.txpractice.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

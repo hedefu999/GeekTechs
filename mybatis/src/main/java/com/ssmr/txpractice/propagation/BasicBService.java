@@ -1,8 +1,7 @@
 package com.ssmr.txpractice.propagation;
 
-import com.ssmr.txpractice.mapper.UserMapper;
+import com.ssmr.txpractice.mapper.StudentMapper;
 import com.ssmr.txpractice.model.Student;
-import com.ssmr.txpractice.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,23 +10,18 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("basicCService")
-public class BasicCService {
-    private final Logger log = LoggerFactory.getLogger(BasicCService.class);
+@Service("basicBService")
+public class BasicBService {
+    private final Logger log = LoggerFactory.getLogger(BasicBService.class);
     @Autowired
-    private UserMapper userMapper;
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-    public void insertUser(User user){
-        userMapper.insertUser(user);
-    }
+    private StudentMapper studentMapper;
 
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateREQUIREDNormal(){
-        User user = new User();
-        user.setId(3);
-        user.setPhone(CommonUtil.getTimeStr());
-        userMapper.updateUser(user);
+        Student student = new Student();
+        student.setId(3);
+        student.setLevel(CommonUtil.getTimeStr());
+        studentMapper.updateStudent(student);
     }
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateREQUIREDException(){
@@ -36,10 +30,10 @@ public class BasicCService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateREQUIRESNEWNormal(){
-        User user = new User();
-        user.setId(3);
-        user.setPhone(CommonUtil.getTimeStr());
-        userMapper.updateUser(user);
+        Student student = new Student();
+        student.setId(3);
+        student.setLevel(CommonUtil.getTimeStr());
+        studentMapper.updateStudent(student);
     }
     @Transactional(propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateREQUIRESNEWException(){
@@ -48,10 +42,10 @@ public class BasicCService {
 
     @Transactional(propagation = Propagation.NESTED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateNESTEDNormal(){
-        User user = new User();
-        user.setId(3);
-        user.setPhone(CommonUtil.getTimeStr());
-        userMapper.updateUser(user);
+        Student student = new Student();
+        student.setId(3);
+        student.setLevel(CommonUtil.getTimeStr());
+        studentMapper.updateStudent(student);
     }
     @Transactional(propagation = Propagation.NESTED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateNESTEDException(){

@@ -1,9 +1,7 @@
 package com.ssmr.txpractice.propagation;
 
-import com.ssmr.txpractice.mapper.RoleMapper;
-import com.ssmr.txpractice.mapper.StudentMapper;
-import com.ssmr.txpractice.model.Role;
-import com.ssmr.txpractice.model.Student;
+import com.ssmr.txpractice.mapper.UserMapper;
+import com.ssmr.txpractice.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +10,23 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("basicBService")
-public class BasicBService {
-    private final Logger log = LoggerFactory.getLogger(BasicBService.class);
+@Service("basicCService")
+public class BasicCService {
+    private final Logger log = LoggerFactory.getLogger(BasicCService.class);
     @Autowired
-    private StudentMapper studentMapper;
+    private UserMapper userMapper;
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    public void insertUser(User user){
+        userMapper.insertUser(user);
+    }
 
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateREQUIREDNormal(){
-        Student student = new Student();
-        student.setId(3);
-        student.setLevel(CommonUtil.getTimeStr());
-        studentMapper.updateStudent(student);
+        User user = new User();
+        user.setId(3);
+        user.setPhone(CommonUtil.getTimeStr());
+        userMapper.updateUser(user);
     }
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateREQUIREDException(){
@@ -32,10 +35,10 @@ public class BasicBService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateREQUIRESNEWNormal(){
-        Student student = new Student();
-        student.setId(3);
-        student.setLevel(CommonUtil.getTimeStr());
-        studentMapper.updateStudent(student);
+        User user = new User();
+        user.setId(3);
+        user.setPhone(CommonUtil.getTimeStr());
+        userMapper.updateUser(user);
     }
     @Transactional(propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateREQUIRESNEWException(){
@@ -44,10 +47,10 @@ public class BasicBService {
 
     @Transactional(propagation = Propagation.NESTED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateNESTEDNormal(){
-        Student student = new Student();
-        student.setId(3);
-        student.setLevel(CommonUtil.getTimeStr());
-        studentMapper.updateStudent(student);
+        User user = new User();
+        user.setId(3);
+        user.setPhone(CommonUtil.getTimeStr());
+        userMapper.updateUser(user);
     }
     @Transactional(propagation = Propagation.NESTED,isolation = Isolation.READ_COMMITTED,rollbackFor = Exception.class)
     public void updateNESTEDException(){

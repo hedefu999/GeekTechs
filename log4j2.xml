@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出,
+    off表示不输出
+    monitorInterval : Log4j能够自动检测修改配置文件和重新配置本身, 设置间隔秒数。
+    <configuration status="warn" monitorInterval="600" >
+日志级别排序：off > fatal > error > warn > info > debug> trace > all
+各通配符含义：
+    %d{yyyy-MM-dd HH:mm:ss, SSS} : 日志产生时间
+    %p : 日志输出格式
+    %c : logger的名称
+    %m : 日志内容，即 logger.info("message")
+    %n : 换行符
+    %C : Java类名
+    %L : 日志输出所在行数
+    %M : 日志输出所在方法名
+    hostName : 本地机器名
+    hostAddress : 本地ip地址
+    [%t]：输出当前线程名称
+    %-5level：输出日志级别,-5表示左对齐并且固定输出5个字符，如果不足在右边补0
+    %logger{36}：输出logger名称，因为Root Logger没有名称，所以没有输出
+-->
+<configuration status="off">
+    <properties>
+        <!--maven项目 ${web:rootDir} 指target/project, 配置为/logs表示在根目录下-->
+        <property name="LOG_HOME">logs</property>
+        <property name="LOG_FILE_NAME">${date:yyyy-MM-dd}</property>
+    </properties>
+    <!--appenders定义输出源-->
+    <appenders>
+        <!--输出控制台的配置-->
+        <console name="console" target="SYSTEM_OUT">
+            <thresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <patternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%class{36}.%M:%L] >>> %msg%xEx%n"/>
+        </console>
+        <!-- 设置日志格式并配置日志压缩策略，可以配置多个RollingFile存储不同级别的信息 -->
+        <!--fileName与filePattern:未压缩的正在添加日志的文件/压缩文件-->
+        <rollingFile name="infoFile" fileName="${LOG_HOME}/${LOG_FILE_NAME}-info.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{MM-dd-yyyy}-%i.info.log.gz">
+            <filters>
+                <!--ACCEPT（放行）、DENY（拒绝）、NEUTRAL（不做任何操作）-->
+                <!--onMatch指的是日志级别大于等于level时的操作，onMismatch表示日志级别小于level时的操作,
+                此处使用集合减的方法只打印INFO级别的日志-->
+                <thresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+                <thresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </filters>
+            <patternLayout pattern="%d{yyyy-MM-dd HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <policies>
+                <!--时间触发策略:单位是filePattern最小时间粒度，此处以天为单位-->
+                <timeBasedTriggeringPolicy interval="1"/>
+                <sizeBasedTriggeringPolicy size="20 MB"/>
+            </policies>
+            <!--限制文件个数-->
+            <defaultRolloverStrategy max="10"/>
+        </rollingFile>
+        <rollingFile name="errorFile" fileName="${LOG_HOME}/${LOG_FILE_NAME}-error.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{MM-dd-yyyy}-%i.error.log.gz">
+            <filters>
+                <thresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <thresholdFilter level="error" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+            </filters>
+            <patternLayout pattern="%d{yyyy-MM-dd HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <policies>
+                <timeBasedTriggeringPolicy interval="2"/>
+                <sizeBasedTriggeringPolicy size="10 MB"/>
+            </policies>
+            <!--限制日志文件数量-->
+            <defaultRolloverStrategy max="5"/>
+        </rollingFile>
+    </appenders>
+    <loggers>
+        <!-- 第三方日志系统 -->
+        <!--若是additivity设为false，则子Logger只会在自己的appender里输出，而不会在父Logger的appender里输出-->
+        <logger name="log4j.logger.org.mybatis" level="FATAL" additivity="true">
+            <appender-ref ref="infoFile"/>
+        </logger>
+        <root level="trace">
+            <appender-ref ref="console"/>
+            <appender-ref ref="infoFile"/>
+            <appender-ref ref="errorFile"/>
+        </root>
+    </loggers>
+</configuration>

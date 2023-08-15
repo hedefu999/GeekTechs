@@ -22,6 +22,11 @@
 
   <properties>
     <spring.boot.version>2.7.5</spring.boot.version>
+    <lombok>1.18.0</lombok>
+    <log4j2>2.15.0</log4j2>
+    <fastjson>1.2.83</fastjson>
+    <gson>2.8.9</gson>
+    <jackson.databind>2.14.2</jackson.databind>
   </properties>
   
   <dependencyManagement>
@@ -32,6 +37,43 @@
         <version>${spring.boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${log4j2}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>${log4j2}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>${log4j2}</version>
+      </dependency>
+
+      <!-- json系列依赖 -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.databind}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>${fastjson}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>${gson}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

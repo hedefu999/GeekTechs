@@ -1,15 +1,12 @@
 package com.ssmr.txpractice;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.ssmr.txpractice.mapper.RoleMapper;
-import com.ssmr.txpractice.mapper.StudentMapper;
 import org.apache.ibatis.session.AutoMappingBehavior;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
@@ -19,11 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
-import java.util.Properties;
 
 @Configuration
 //下面两种扫描包的方式任选

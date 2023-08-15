@@ -8,7 +8,6 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.MessageProperties;
-import org.junit.Test;
 
 import java.io.IOException;
 
@@ -17,7 +16,7 @@ public class MQTestCases {
     /**
      * 生产者端Demo
      */
-    @Test
+    //@Test
     public void testProducer() throws Exception{
         Connection connection = RabbitMQConnFactory.newConnection();
         //创建信道
@@ -42,7 +41,7 @@ public class MQTestCases {
     /**
      * 消费者端 Demo
      */
-    @Test
+    //@Test
     public void testConsumerDemo() throws Exception {
         Address[] addresses = new Address[]{
           new Address("127.0.0.1",5672)
