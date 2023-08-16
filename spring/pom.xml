@@ -31,10 +31,6 @@
         </dependency>
 
         <!-- json系列依赖 -->
-        <!--<dependency>-->
-        <!--    <groupId>com.fasterxml.jackson.core</groupId>-->
-        <!--    <artifactId>jackson-databind</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -108,5 +104,18 @@
 
     </dependencies>
 
-
+    <build>
+        <resources>
+            <!-- 从父目录继承资源 -->
+            <resource>
+                <directory>../</directory>
+                <includes>
+                    <include>log4j2.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>/src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
 </project>
