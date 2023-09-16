@@ -1,7 +1,7 @@
 package com.javalearning.leetcode.labuladong;
 
-import com.javalearning.element.TreeNode;
-import com.javalearning.utils.PrintUtils;
+import com.javalearning.leetcode.components.TreeNode;
+import com.javalearning.leetcode.utils.PrintUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
 import org.slf4j.Logger;

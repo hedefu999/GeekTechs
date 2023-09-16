@@ -1,7 +1,7 @@
 package com.javalearning.leetcode.datastructure;
 
-import com.javalearning.element.ListNode;
-import com.javalearning.utils.PrintUtils;
+import com.javalearning.leetcode.components.ListNode;
+import com.javalearning.leetcode.utils.PrintUtils;
 import org.junit.Test;
 
 public class _01ListTable {

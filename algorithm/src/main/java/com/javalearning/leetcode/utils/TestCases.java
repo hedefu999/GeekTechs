@@ -1,7 +1,7 @@
-package com.javalearning.utils;
+package com.javalearning.leetcode.utils;
 
-import com.javalearning.element.ListNode;
-import com.javalearning.element.TreeNode;
+import com.javalearning.leetcode.components.ListNode;
+import com.javalearning.leetcode.components.TreeNode;
 
 public class TestCases {
     //链表

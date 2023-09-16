@@ -1,4 +1,4 @@
-package com.javalearning.element;
+package com.javalearning.leetcode.components;
 
 public class TreeNode {
     public int val;

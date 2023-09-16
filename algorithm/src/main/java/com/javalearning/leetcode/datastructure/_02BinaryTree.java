@@ -1,6 +1,6 @@
 package com.javalearning.leetcode.datastructure;
 
-import com.javalearning.element.TreeNode;
+import com.javalearning.leetcode.components.TreeNode;
 import org.junit.Test;
 
 import java.util.LinkedList;

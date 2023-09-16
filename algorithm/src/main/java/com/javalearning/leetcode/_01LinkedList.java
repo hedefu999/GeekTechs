@@ -1,8 +1,7 @@
 package com.javalearning.leetcode;
 
-import com.javalearning.element.ListNode;
-import com.javalearning.utils.PrintUtils;
-import com.javalearning.utils.TestCases;
+import com.javalearning.leetcode.components.ListNode;
+import com.javalearning.leetcode.utils.TestCases;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;

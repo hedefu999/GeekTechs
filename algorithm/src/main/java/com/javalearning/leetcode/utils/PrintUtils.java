@@ -1,7 +1,9 @@
-package com.javalearning.utils;
+package com.javalearning.leetcode.utils;
 
-import com.javalearning.element.ListNode;
-import com.javalearning.element.TreeNode;
+import com.javalearning.leetcode.components.ListNode;
+import com.javalearning.leetcode.components.TreeNode;
+
+import java.util.Arrays;
 
 public class PrintUtils {
     public static void printListNodes(ListNode l1){
@@ -53,6 +55,10 @@ public class PrintUtils {
             }
             System.out.println();
         }
+    }
+
+    public static void printIntArray(int[] nums){
+        System.out.println(Arrays.toString(nums));
     }
 
     public static void main(String[] args) {

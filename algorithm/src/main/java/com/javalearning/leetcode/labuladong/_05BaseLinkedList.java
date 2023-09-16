@@ -1,8 +1,8 @@
 package com.javalearning.leetcode.labuladong;
 
-import com.javalearning.element.ListNode;
-import com.javalearning.utils.PrintUtils;
-import com.javalearning.element.TreeNode;
+import com.javalearning.leetcode.components.ListNode;
+import com.javalearning.leetcode.utils.PrintUtils;
+import com.javalearning.leetcode.components.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,3 +1,13 @@
+# 算法模块 algorithm
+- leetcode 面向面试的算法，以LeetCode为主
+  - components  算法题需要用到的公共组件类
+  - utils 调试算法方便而写的工具方法
+  - _0xXXX 算法题分类
+- freeresearch 自由研究
+  - SortingAlgorithm 面试时用得着的排序算法
+  - CodingInterviews 如果有时间会刷的剑指offer算法题，看看究竟是啥
+
+
 # labudadong系列算法文章
 
 gitbook链接   [labuladong的算法小抄](https://labuladong.gitbook.io/algo/)

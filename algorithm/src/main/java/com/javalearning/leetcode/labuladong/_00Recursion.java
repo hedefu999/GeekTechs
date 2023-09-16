@@ -1,6 +1,6 @@
 package com.javalearning.leetcode.labuladong;
 
-import com.javalearning.element.TreeNode;
+import com.javalearning.leetcode.components.TreeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package com.javalearning.leetcode.labuladong;
 
-import com.javalearning.element.TreeNode;
-import com.javalearning.utils.TestCases;
+import com.javalearning.leetcode.components.TreeNode;
+import com.javalearning.leetcode.utils.TestCases;
 
 import java.util.Arrays;
 import java.util.HashMap;

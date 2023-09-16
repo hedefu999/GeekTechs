@@ -1,6 +1,6 @@
 package com.javalearning.leetcode.labuladong;
 
-import com.javalearning.utils.TestCases;
+import com.javalearning.leetcode.utils.TestCases;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.Assert;

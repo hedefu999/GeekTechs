@@ -74,29 +74,13 @@ nums = [3,2,2,3], val = 3 输出：2, nums = [2,2]
     return null;
 }// 类似此题的搜索空间削减的题还有 11 240
 
+//endregion
+
+//region 排序算法
+
+//endregion
 
 //region 数组中的滑动窗口算法
-
-//endregion
-
-//region 数组中的二分查找算法
-/*
-***/static int binarySearch(int[] nums, int target){
-    int left=0,right=nums.length-1;
-    while (left <= right){
-        int middle = (left+right)/2;
-        if (nums[middle] == target){
-            return middle;
-        }else
-        if (nums[middle] < target){
-            left = middle + 1;
-        }else {
-            right = middle - 1;
-        }
-    }
-    return -1;
-}
-//endregion
 
 //endregion
 
@@ -152,7 +136,7 @@ static List<List<Integer>> threeSum1(int[] nums) {
     //外层遍历中间指针对于内层相当于固定中间指针，转化成双指针解法
     int mid,right;
     for (int left = 0; left < nums.length - 2; left++) {
-        if (nums[left]>0) break;
+        if (nums[left]>0) break; //target=0才可以这样判断，如果target是负数就不可以，如 -4 -3 -2 -1 在target=-5时，-4显然是有机会的
         if (left>0 && nums[left-1] == nums[left]) continue;
         mid = left+1;right = nums.length-1;
         while (mid < right){
@@ -210,22 +194,51 @@ static List<List<Integer>> threeSum(int[] nums) {
 }
 
 /* LC18 四数之和
-todo memo 上周末进度
-***/
+数组nums中有n个数，从中找出4个数nums[a]、nums[b]、nums[c]、nums[d](a b c d不重复)和为target
+仍然采用三数之和的解法，只不过此时要固定左边的两个游标。时间复杂度 O(N^3)
+System.out.println(fourSum(new int[]{-2,-1,0,0,1,2},0));
+System.out.println(fourSum(new int[]{2,2,2,2,2},8));
+System.out.println(fourSum(new int[]{-4,-1,-1,0,1,2},-1));//[[-4,0,1,2],[-1,-1,0,1]]
+System.out.println(fourSum(new int[]{-5,-4,-3,-2,1,3,3,5},-11));//[[-5,-4,-3,1]]
+//避免溢出，要么改用long，要么不直接 a+b > c，换成 a-c>-b
+System.out.println(fourSum(new int[]{1000000000,1000000000,1000000000,1000000000},-294967296));//[[1000000000,1000000000,1000000000,1000000000]]
+***/static List<List<Integer>> fourSum(int[] nums, int target) {
+    if (nums == null || nums.length < 4) return new ArrayList<>();
+    Arrays.sort(nums);
+    List<List<Integer>> result = new ArrayList<>();
+    for (int i = 0; i < nums.length - 3; i++) {
+        if (i>0 && nums[i]==nums[i-1]) continue;//去重（不必使用while）
+        for (int j = i+1; j < nums.length - 2; j++) {
+            if (j>i+1 && nums[j]==nums[j-1]) continue;//去重
+            long twoSum = nums[i] + nums[j];//官方增加了一个溢出用例
+            int left = j+1;int right = nums.length-1;
+            while (left < right){
+                long fourSum = twoSum + nums[left] + nums[right];
+                if (fourSum == target){
+                    result.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                    left++;right--;
+                }else if (fourSum < target){
+                    left++;
+                }else {
+                    right--;
+                }
+                while (left>j+1 && left<right && nums[left] == nums[left-1]){
+                    left++;
+                }
+                while (right>left && right<nums.length-1 && nums[right] == nums[right+1]){
+                    right--;
+                }
+            }
+        }
+    }
+    return result;
+}
+// todo fourSum 回溯剪枝解法？
+
 
 //endregion
 
     public static void main(String[] args) {
-//        int[] ints = {0,1,0,3,12};moveZeroes(ints);
-//        System.out.println(moveZeroes(ints));
-        System.out.println(threeSum(new int[]{-4,-1,-1,0,1,2}));//[[-1, -1, 2], [-1, 0, 1]]
-        System.out.println(threeSum(new int[]{-1,0,1}));//[[-1, 0, 1]]
-        System.out.println(threeSum(new int[]{0,0,0}));//[[0, 0, 0]]
-        System.out.println(threeSum(new int[]{0,0,0,0}));//[[0, 0, 0]]
-        //下述是棘手的mid越过重复值的问题，有些是不能越过的 B
-        System.out.println(threeSum(new int[]{0,0,0,0,0,0,0,0}));//[[0, 0, 0]]
-        System.out.println(threeSum(new int[]{-1,-1,0,1,2,10}));//A [-1,-1,2],[-1,0,1]
-        System.out.println(threeSum(new int[]{-1,0,0,1}));//C [-1, 0, 1]]
-        System.out.println(threeSum(new int[]{-2,0,1,1,2}));//B [-2, 0, 2]], [-2, 1, 1]
+
     }
 }
