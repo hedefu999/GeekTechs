@@ -14,7 +14,7 @@ public class ClassicJDBC {
         ResultSet rs = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ssmr","root","hedefu999");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ssmr","root","...999");
             ps = conn.prepareStatement("select id,`name`,age,note from role where id = ?");
             //Statement statement = conn.createStatement();
             //ResultSet resultSet = statement.executeQuery("select id,`name`,age,note from role where id = 2");

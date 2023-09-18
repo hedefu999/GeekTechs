@@ -849,7 +849,7 @@ public class _04JavaConcurrentProgramming {
         }
 
         public static void main(String[] args) throws Exception {
-            String basePath = "/Users/hedefu/Documents/DEVELOPER/IDEA/JavaLearning/concurrency/src/main/resources/javaconcurrencyart/_04simplehttpserver";
+            String basePath = "~/concurrency/src/main/resources/javaconcurrencyart/_04simplehttpserver";
             SimpleHttpServer.setBasePath(basePath);
             SimpleHttpServer.start();
         }

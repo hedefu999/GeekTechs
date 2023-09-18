@@ -27,7 +27,7 @@ public class CommonTest {
         //从配置文件流生成的Property设置到DruidDataSource里
         System.out.println("user = "+props.getProperty("db.username")+props.getProperty("db.password")+props.getProperty("${db.url}")+props.getProperty("${db.driver}"));
         /**
-         * user = roothedefu999nullnull
+         * user = root...999nullnull
          */
     }
 }

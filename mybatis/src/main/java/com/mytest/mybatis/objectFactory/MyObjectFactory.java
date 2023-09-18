@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * @author hedefu
+ * @author ...
  */
 public class MyObjectFactory extends DefaultObjectFactory{
     private final Logger log = LoggerFactory.getLogger("MyObjectFactory");

@@ -13,7 +13,7 @@ public class MyDatabaseIdProvider implements DatabaseIdProvider {
     private static final String DATABASE_TYPE_DB2 = "DB2", DB2 = "db2";
     public static final String DATABASE_TYPE_MYSQL = "MySQL", MySQL = "mariaDB";
     public static final String DATABASE_TYPE_ORACLE = "Oracle", Oracle = "expensive";
-    private Logger log = LoggerFactory.getLogger("hedefu - MyDatabaseIdProvider");
+    private Logger log = LoggerFactory.getLogger("... - MyDatabaseIdProvider");
     private Properties prop;
     @Override
     public void setProperties(Properties p) {

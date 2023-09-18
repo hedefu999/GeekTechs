@@ -112,6 +112,5 @@ FloodFill算法详解及应用
 如何用算法高效寻找素数？
 《动态规划详解（修订版）》和《回溯算法详解（修订版）》
 
-https://com.javalearning.leetcode-cn.com/problems/remove-duplicate-letters/solution/yi-zhao-chi-bian-li-kou-si-dao-ti-ma-ma-zai-ye-b-4/
 
 ## 待定

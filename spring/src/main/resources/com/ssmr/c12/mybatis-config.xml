@@ -8,7 +8,7 @@
     <setting name="autoMappingBehavior" value="PARTIAL"/>
     <setting name="mapUnderscoreToCamelCase" value="true"/>
     <setting name="defaultEnumTypeHandler" value="org.apache.ibatis.type.EnumTypeHandler"/>
-    <setting name="logPrefix" value="hedefu -："/>
+    <setting name="logPrefix" value="... -："/>
     <setting name="callSettersOnNulls" value="true"/>
   </settings>
   
@@ -32,7 +32,7 @@
   <!--Mybatis-Spring中的SqlSessionFactoryBean的mappLocations接管此处配置-->
   <!--<mappers>-->
     <!--&lt;!&ndash;直接规范地设置mapper.xml存储路径&ndash;&gt;-->
-    <!--<package name="com.hedefu.mybatis.mapper"/>-->
+    <!--<package name="com.....mybatis.mapper"/>-->
   <!--</mappers>-->
   
 </configuration>

@@ -8,6 +8,6 @@ public class BeanServiceImpl implements BeanService {
 
   @Override
   public String getResult(String input) {
-    return "hedefu:"+input;
+    return "...:"+input;
   }
 }

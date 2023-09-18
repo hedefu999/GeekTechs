@@ -13,7 +13,7 @@ public class SyncBlockAndMethod {
 
     }
     /*
-     Classfile /Users/hedefu/Documents/DEVELOPER/IDEA/JavaLearning/concurrency/src/main/java/com/concurrency/javaconcurrencyart/SyncBlockAndMethod.class
+     Classfile ~/concurrency/src/main/java/com/concurrency/javaconcurrencyart/SyncBlockAndMethod.class
      Last modified May 5, 2020; size 460 bytes
      MD5 checksum d6d0c3dbd15088934378e0c5a6d1100b
      Compiled from "SyncBlockAndMethod.java"

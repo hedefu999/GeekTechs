@@ -7,7 +7,7 @@
     <property name="db.driver" value="com.mysql.cj.jdbc.Driver"/>
     <property name="db.url" value="jdbc:mysql://localhost:3306/ssmr"/>
     <!--由于优先级较低，被properties文件中的同名配置覆盖-->
-    <property name="db.username" value="hedefu"/>
+    <property name="db.username" value="..."/>
   </properties>
   
   <settings>
@@ -17,7 +17,7 @@
     <setting name="autoMappingBehavior" value="PARTIAL"/>
     <setting name="mapUnderscoreToCamelCase" value="true"/>
     <setting name="defaultEnumTypeHandler" value="org.apache.ibatis.type.EnumTypeHandler"/>
-    <setting name="logPrefix" value="hedefu -："/>
+    <setting name="logPrefix" value="... -："/>
     <setting name="callSettersOnNulls" value="true"/>
   </settings>
   
@@ -49,7 +49,7 @@
   </plugins>
   
   <!--<objectFactory type="com.mytest.mybatis.objectFactory.MyObjectFactory">-->
-    <!--<property name="propStr" value="hedefu"/>-->
+    <!--<property name="propStr" value="..."/>-->
   <!--</objectFactory>-->
   
   <environments default="dev">
@@ -72,12 +72,12 @@
   <!--</databaseIdProvider>-->
   
   <!--<databaseIdProvider type="com.mytest.mybatis.databaseProvider.MyDatabaseIdProvider">-->
-    <!--<property name="author" value="hedefu"/>-->
+    <!--<property name="author" value="..."/>-->
   <!--</databaseIdProvider>-->
   
   <mappers>
     <!--<mapper resource="mapper/TestBlobMapper.xml"/>-->
-    <!--<mapper url="file:/Users/hedefu/Documents/WorkSpace/IDEA/JavaSSMR/mybatis/src/main/resources/mapper/RoleMapper.xml"/>-->
+    <!--<mapper url="file:/Users/.../Documents/WorkSpace/IDEA/JavaSSMR/mybatis/src/main/resources/mapper/RoleMapper.xml"/>-->
     <!--<mapper class="com.mytest.mybatis.mapper.TestUserMapper"/>-->
     <!--<mapper class="com.mytest.mybatis.mapper.UserInfoMapper"/>-->
     

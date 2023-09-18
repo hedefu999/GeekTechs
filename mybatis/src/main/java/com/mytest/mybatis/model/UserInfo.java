@@ -28,7 +28,7 @@ public class UserInfo{
     //private Timestamp updateTime;
 
     public UserInfo(int id, String userName, Integer age, String signDesc, LocalDate birth, BigDecimal balance, LocalDateTime createTime, LocalDateTime updateTime) {
-        System.out.println("hedefu: all args constructor was invoked!");
+        System.out.println("...: all args constructor was invoked!");
         this.id = id;
         this.userName = userName;
         this.age = age;

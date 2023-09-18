@@ -27,7 +27,7 @@ public class TransacManageConfig implements TransactionManagementConfigurer {
         props.setProperty("driverClassName","com.mysql.cj.jdbc.Driver");
         props.setProperty("url","jdbc:mysql://localhost:3306/ssmr");
         props.setProperty("username","root");
-        props.setProperty("password","hedefu999");
+        props.setProperty("password","...999");
         props.setProperty("maxActive","200");
         props.setProperty("maxIdle","20");
         props.setProperty("maxWait","30000");

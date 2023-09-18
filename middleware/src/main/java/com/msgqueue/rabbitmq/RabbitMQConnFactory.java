@@ -9,8 +9,8 @@ public class RabbitMQConnFactory {
         factory.setHost("0.0.0.0");
         factory.setPort(5672);
         factory.setVirtualHost("/");
-        factory.setUsername("hedefu");
-        factory.setPassword("hedefu999");
+        factory.setUsername("...");
+        factory.setPassword("...999");
     }
     public static Connection newConnection(){
         try {
