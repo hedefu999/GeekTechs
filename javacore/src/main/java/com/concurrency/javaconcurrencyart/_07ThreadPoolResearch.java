@@ -1,6 +1,5 @@
 package com.concurrency.javaconcurrencyart;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +68,7 @@ public class _07ThreadPoolResearch {
      */
     static class ThreadPoolPrimary{
         public static void main1() {
-            ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("XX-task-%d").build();
+            ThreadFactory threadFactory = null;
 
             ExecutorService zeroCoreOneMinuteThreadLiveSyncQueue = Executors.newCachedThreadPool(threadFactory);
             ExecutorService specifiedSameCoreAndMaxCountLinkBlockQueue = Executors.newFixedThreadPool(4, threadFactory);
@@ -78,7 +77,7 @@ public class _07ThreadPoolResearch {
         }
 
         public static void main(String[] args) throws InterruptedException {
-            ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("MyThreadPool - thread - %d").build();
+            ThreadFactory threadFactory = null;
             ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(2,
                     2,
                     0,

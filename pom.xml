@@ -12,9 +12,7 @@
   <modules>
     <module>mybatis</module>
     <module>spring</module>
-    <module>common</module>
     <module>javacore</module>
-    <module>redis</module>
     <module>algorithm</module>
     <module>middleware</module>
     <module>springboot</module>

@@ -1,6 +1,5 @@
 package com.mybatis.chapter08;
 
-import com.google.common.collect.Lists;
 import com.mytest.mybatis.mapper.RoleMapper;
 import com.mytest.mybatis.model.Role;
 import com.mybatis.utils.JDBCUtils;
@@ -20,7 +19,7 @@ public class Chapter08Test {
     public void simpleQuery(){
         RoleMapper roleMapper = SqlSessionFactoryUtils.getMapper(RoleMapper.class,"mybatis-config.xml");
         PageParam pageParam = new PageParam(1,3,true,true,true,null,null);
-        List<Role> roleList = roleMapper.findRoles(pageParam,Lists.newArrayList("teacher","saler",
+        List<Role> roleList = roleMapper.findRoles(pageParam,Arrays.asList("teacher","saler",
                 "professor",
                 "principal",
                 "cashier",

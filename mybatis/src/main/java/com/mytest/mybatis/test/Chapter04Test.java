@@ -1,6 +1,5 @@
 package com.mytest.mybatis.test;
 
-import com.google.common.collect.Lists;
 import com.mytest.mybatis.enums.SexEnum;
 import com.mytest.mybatis.enums.TestUserTypeEnum;
 import com.mytest.mybatis.mapper.RoleMapper;

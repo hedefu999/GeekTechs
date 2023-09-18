@@ -1,14 +1,58 @@
-package com.annotations.inherited;
+package com.annotations;
 
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class TestInheritedAnno {
+public class InheritedAnnotations {
+    /**
+     * Inherited: 使用此注解声明出来的自定义注解，表示将来使用InheritedTest的类及其子类会自动继承此注解
+     * .@Inherited只能用于类，对方法属性无效
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Inherited
+    public @interface InheritedTest {
+        String value();
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface InheritedTest2 {
+        String value();
+    }
+
+    @InheritedTest("使用Inherited的注解 class")
+    @InheritedTest2("未使用Inherited的注解 class")
+    public class Parent {
+        @InheritedTest("使用Inherited的注解 method")
+        @InheritedTest2("未使用Inherited的注解 method")
+        public void method(){
+
+        }
+        @InheritedTest("使用Inherited的注解 method2")
+        @InheritedTest2("未使用Inherited的注解 method2")
+        public void method2(){
+
+        }
+
+        @InheritedTest("使用Inherited的注解 field")
+        @InheritedTest2("未使用Inherited的注解 field")
+        public String a;
+    }
+
+    public class Child extends Parent {
+        @Override
+        public void method() {
+            super.method();
+        }
+    }
+
     private static Logger log = LoggerFactory.getLogger("TestInheritedAnno");
     public static void main(String[] args) {
         Class<Child> child = Child.class;

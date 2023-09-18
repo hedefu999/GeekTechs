@@ -2,7 +2,6 @@ package com.concurrency.javadxcbchxjs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1343,9 +1342,7 @@ public class _5SynchronizedAPI {
                 if (num != null){
                     lock.setNumber(num);
                 }
-                if (!StringUtils.isEmpty(name)){
-                    lock.setName(name);
-                }
+                lock.setName(name);
             }
             public void setLock(Lock lock){
                 this.lock = lock;
