@@ -10,13 +10,13 @@
   <version>1.0-SNAPSHOT</version>
 
   <modules>
-    <module>mybatis</module>
-    <module>spring</module>
-    <module>javacore</module>
     <module>algorithm</module>
+    <module>javacore</module>
     <module>middleware</module>
+    <module>spring</module>
     <module>springboot</module>
-    <module>vipshop</module>
+
+    <module>mybatis</module>
   </modules>
 
   <properties>
@@ -46,6 +46,8 @@
     <guava-retrying>2.0.0</guava-retrying>
     <caffine>3.1.1</caffine>
     <redission>3.22.1</redission>
+    <elasticsearch>2.3.2</elasticsearch>
+    <elasticsearch-rest-api>7.6.2</elasticsearch-rest-api>
   </properties>
   
   <dependencyManagement>
@@ -235,7 +237,16 @@
         <version>${redission}</version>
       </dependency>
 
-
+      <dependency>
+        <groupId>org.elasticsearch</groupId>
+        <artifactId>elasticsearch</artifactId>
+        <version>${elasticsearch}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-high-level-client</artifactId>
+        <version>${elasticsearch-rest-api}</version>
+      </dependency>
       <!-- endregion -->
     </dependencies>
   </dependencyManagement>

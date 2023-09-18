@@ -2,6 +2,8 @@ package com.javalearning.freeresearch;
 
 import com.javalearning.leetcode.utils.PrintUtils;
 
+import java.util.Arrays;
+
 /**
 排序相关算法合集
 排序算法合集页 https://www.runoob.com/w3cnote/ten-sorting-algorithm.html
@@ -168,6 +170,62 @@ static void quickSort(int[] nums){
     //注意是闭区间，要减1
     quickSortWithClosedInterval(nums, 0, nums.length-1);
 }
+/**桶排序算法
+ - 桶排序是计数排序的升级版，利用了函数的映射关系，排序的高效与否与映射函数有关，映射函数应满足下述特征：
+ - 桶多：在额外空间充足的情况下，尽量增大桶的数量
+ - 均匀：使用映射函数能够将输入的N个数据均匀分配到K个桶中
+ - 桶排序何时最快：输入的数据均匀地分配到了每一个桶中
+ - 何时最慢：输入的数据被分配到了同一个桶中
+
+ - 排序思路：数组要按数字大小分配到不同的等长区间中，这些等长的区间就是桶。分配到同一个桶中的元素按出现的先后顺序入桶
+    然后再使用其他排序算法对桶中元素排序（严格讲桶排序算不上排序算法，更像是排序前的优化整理）
+    分桶后的效果：（很多桶被闲置）
+ 34 18 54 5 4 69 99 98 54 56
+ 0  1  2  3 4 5 6 7 8 9 10 11 12 13  14 15 16 17 18 19
+ | 5 4 |        |       |        |69             |98 |99
+       | 18     |34     | 54 54 56
+ */static int[] bucketSortWithSize(int[] nums, int bucketSize){
+    if (nums.length == 0){
+        return nums;
+    }
+    //先找到数组中的最大值和最小值，就算按bucketSize代表的 区间长度 分桶，需要多少个桶（这样的区间数量）
+    int minVal = nums[0];
+    int maxVal = nums[0];
+    for (int num : nums) {
+        if (num < minVal){
+            minVal = num;
+        }else if (num > maxVal){
+            maxVal = num;
+        }
+    }//桶数量的计算：bucketSize=5时， 4 5 6 7 8 9 需要两个桶，4 5 6 7 8 9 10 也是需要两个桶
+    int bucketCount = (maxVal - minVal)/bucketSize + 1;
+    int[][] buckets = new int[bucketCount][0];
+
+    //利用映射函数将数据分配到各个桶中
+    for (int i = 0; i < nums.length; i++) {
+        int bucketIndex = (nums[i] - minVal) / bucketSize;
+        //对 bucketIndex 上的数组进行扩容，增加一个元素
+        int[] ints = Arrays.copyOf(buckets[bucketIndex], buckets[bucketIndex].length + 1);
+        ints[ints.length-1]=nums[i];
+        buckets[bucketIndex] = ints;
+    }
+    //分配完毕，对桶中元素进行排序,排好序直接放入原数组
+    int numsIndex = 0;
+    for (int[] bucket : buckets) {
+        if (bucket.length <= 0){
+            continue;
+        }
+        //桶中元素的排序可以使用任意一种
+        quickSort(bucket);
+        for (int bucketItem : bucket) {
+            nums[numsIndex++] = bucketItem;
+        }
+    }
+    return nums;
+}
+static int[] bucketSort(int[] nums){
+    return bucketSortWithSize(nums, 5);
+}
 
 /*-=-=-=-=-=-=- 默写起来有难度的排序，建议只掌握思路 -=-=-=-=-=-=-=-*/
 /** 堆排序
@@ -236,20 +294,16 @@ static void shellSort(int[] nums){
     }
 }
 
-/**桶排序算法
- */
-
-
 public static void main(String[] args) {
-    shellSort(SORTS_01);
-//    PrintUtils.printIntArray(SORTS_01);
+    bucketSort(SORTS_01);
+    PrintUtils.printIntArray(SORTS_01);
 //    int[] a = {1,4,5,9,12,15};
 //    int[] b = {2,3,5,7,11,13};
 //    PrintUtils.printIntArray(mergeTwoSortedArray(b,a));
-    for (int[] sort : SORTS) {
-        int[] ints = mergeSort(sort);
-        PrintUtils.printIntArray(ints);
-    }
+//    for (int[] sort : SORTS) {
+//        int[] ints = mergeSort(sort);
+//        PrintUtils.printIntArray(ints);
+//    }
 }
 //endregion
 
