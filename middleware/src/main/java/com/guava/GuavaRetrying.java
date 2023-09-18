@@ -1,4 +1,4 @@
-package com.retry;
+package com.guava;
 
 import com.github.rholder.retry.Attempt;
 import com.github.rholder.retry.RetryListener;

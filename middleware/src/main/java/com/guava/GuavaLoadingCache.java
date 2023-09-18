@@ -5,7 +5,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
-import org.junit.Test;
 
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -30,10 +29,7 @@ refreshAfterWrite是在指定时间内没有被创建/覆盖，则指定时间�
 还有一个问题，真正加载数据的那个线程一定会阻塞，我们希望这个加载过程是异步的。这样就可以让所有线程立马返回旧值，在后台刷新缓存数据。refreshAfterWrite默认的刷新是同步的，会在调用者的线程中执行。我们可以改造成异步的，办法是实现CacheLoader.reload()即可。
  */
 public class GuavaLoadingCache {
-    @Test
-    public void test32() throws Exception{
 
-    }
     static class Primary{
         public static void main(String[] args) throws Exception {
             ExecutorService executor = Executors.newFixedThreadPool(1);
@@ -87,7 +83,6 @@ public class GuavaLoadingCache {
         }
     }
 
-    @Test
     public void test90() {
         String dict = "helloworldiamandroid";
         LoadingCache<Integer,String> cache =

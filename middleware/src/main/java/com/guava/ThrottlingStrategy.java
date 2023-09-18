@@ -1,4 +1,4 @@
-package com.flowlimiter;
+package com.guava;
 
 import com.google.common.util.concurrent.RateLimiter;
 import redis.clients.jedis.Jedis;
