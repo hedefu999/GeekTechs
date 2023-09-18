@@ -1,0 +1,36 @@
+import drools.OrderRequest;
+
+global drools.OrderDiscount orderDiscount;
+dialect "mvel"
+
+//规则1：小于20岁，大于50岁多给折扣
+rule "Age based discount"
+when
+    OrderRequest(age<20 || age>50)
+then
+    System.out.println("++增加10%折扣++");
+    orderDiscount.setDiscount(orderDiscount.getDiscount()+10);
+end
+//LOYAL类型客户增加5%折扣
+rule "Customer type based discount - Loyal customer"
+when
+    OrderRequest(customerType.getValue == "LOYAL")
+then
+    System.out.println("++增加5%折扣++");
+    orderDiscount.setDiscount(orderDiscount.getDiscount()+5);
+end
+
+rule "Customer type based discount - others"
+when
+    OrderRequest(customerType.getValue != "LOYAL")
+then
+    System.out.println("其他类型客户增加3%的折扣");
+    orderDiscount.setDiscount(orderDiscount.getDiscount()+3);
+end
+
+rule "Amount based discount"
+when OrderRequest(amount > 1000L)
+then
+    System.out.println("订单金额超过1000增加5%折扣");
+    orderDiscount.setDiscount(orderDiscount.getDiscount()+5);
+end

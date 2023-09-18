@@ -1,2 +1,0 @@
-INSERT INTO chapter5.work_card (id, emp_id, real_name, department) VALUES (1, 1, 'jack brown', 'technology');
-INSERT INTO chapter5.work_card (id, emp_id, real_name, department) VALUES (2, 2, 'lucy dash', 'finance');
