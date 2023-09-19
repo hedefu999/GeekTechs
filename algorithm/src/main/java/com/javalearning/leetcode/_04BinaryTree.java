@@ -2,6 +2,7 @@ package com.javalearning.leetcode;
 
 import com.javalearning.leetcode.components.ListNode;
 import com.javalearning.leetcode.components.TreeNode;
+import org.junit.jupiter.api.Test;
 
 public class _04BinaryTree {
 //region 二叉树总结 labuladong纲领篇
@@ -10,7 +11,7 @@ public class _04BinaryTree {
 
 */
 //二叉树遍历函数
-void traverse(TreeNode root){
+static void traverse(TreeNode root){
     if (root == null){
         return;
     }
@@ -46,7 +47,20 @@ void traverse2(ListNode head){
     for (ListNode cursor=head; cursor != null; cursor=cursor.next) {
     }
 }
-//todo 上周进度
+
+/**
+前序遍历 1234567
+中序遍历 3241765
+后序遍历 3427651
+
+ */@Test void recall3WaysTreeTraverse(){
+    Integer[] nodes = {1,2,5,3,4,6,null,null,null,null,null,7,null};
+    TreeNode root = TreeNode.plantATree(nodes);
+    traverse(root);
+}
+
+
+
 //endregion
 
 

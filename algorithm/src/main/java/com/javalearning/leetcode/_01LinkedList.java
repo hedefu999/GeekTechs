@@ -514,8 +514,8 @@ head = [1,1,2,3,3]  输出：[1,2,3]
 
 
     public static void main(String[] args) {
-        ListNode la = TestCases.getNodesList(new int[]{});
-        ListNode lb = TestCases.getNodesList(new int[]{3,2,4});
+        ListNode la = ListNode.getNodesList(new int[]{});
+        ListNode lb = ListNode.getNodesList(new int[]{3,2,4});
         System.out.println(deleteDuplicates(la));
     }
 }

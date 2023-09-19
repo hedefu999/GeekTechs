@@ -4,55 +4,6 @@ import com.javalearning.leetcode.components.ListNode;
 import com.javalearning.leetcode.components.TreeNode;
 
 public class TestCases {
-    //链表
-    public static ListNode getTwoNodes(){
-        ListNode head = new ListNode(2);
-        head.next = new ListNode(3);
-        return head;
-    }
-    public static ListNode getNodesList(int nodesCount){
-        ListNode tenNodes = new ListNode(0);
-        ListNode tail = tenNodes;
-        for (int i = 1; i < nodesCount; i++) {
-            tail.next = new ListNode(i);
-            tail = tail.next;
-        }
-        return tenNodes;
-    }
-    public static ListNode getNodesList(int[] nums){
-        if (nums == null || nums.length == 0){
-            return null;
-        }
-        ListNode head = new ListNode(nums[0]);
-        ListNode cursor = head;
-        for (int i = 1; i < nums.length; i++) {
-            cursor.next = new ListNode(nums[i]);
-            cursor = cursor.next;
-        }
-        return head;
-    }
-    public static ListNode[] getNodeLists(int[][] nums){
-        ListNode[] listNodes = new ListNode[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            listNodes[i] = getNodesList(nums[i]);
-        }
-        return listNodes;
-    }
-    public static void buildIntersectList(ListNode la, ListNode lb, int jointAIndex, int joinBIndex){
-        if (jointAIndex == -1 || joinBIndex == -1){
-            return;
-        }
-        ListNode dummyA = new ListNode(-99);dummyA.next=la;
-        ListNode dummyB = new ListNode(-99);dummyB.next=lb;
-        for (int i = 0; i < jointAIndex; i++) {
-            dummyA = dummyA.next;
-        }
-        for (int i = 0; i < joinBIndex; i++) {
-            dummyB = dummyB.next;
-        }
-        dummyA.next=dummyB.next;
-    }
-
     //股票最大利润问题
     public static int[] prices0 = {3,2,5,6,10,9,7,11,14};//15:
     public static int[] prices1 = {7,1,5,3,6,4};//7:1-5,3-6

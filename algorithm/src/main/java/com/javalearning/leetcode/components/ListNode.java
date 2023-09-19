@@ -32,4 +32,32 @@ public class ListNode {
         return head;
     }
 
+    //链表
+    public static ListNode getTwoNodes(){
+        ListNode head = new ListNode(2);
+        head.next = new ListNode(3);
+        return head;
+    }
+    public static ListNode getNodesList(int nodesCount){
+        ListNode tenNodes = new ListNode(0);
+        ListNode tail = tenNodes;
+        for (int i = 1; i < nodesCount; i++) {
+            tail.next = new ListNode(i);
+            tail = tail.next;
+        }
+        return tenNodes;
+    }
+    public static ListNode getNodesList(int[] nums){
+        if (nums == null || nums.length == 0){
+            return null;
+        }
+        ListNode head = new ListNode(nums[0]);
+        ListNode cursor = head;
+        for (int i = 1; i < nums.length; i++) {
+            cursor.next = new ListNode(nums[i]);
+            cursor = cursor.next;
+        }
+        return head;
+    }
+
 }
