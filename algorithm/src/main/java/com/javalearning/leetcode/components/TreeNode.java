@@ -12,7 +12,12 @@ public class TreeNode {
         return val+"";
     }
 
-    //使用数组构建一棵二叉树，数组形如 [3,9,20,null,null,15,7]
+    /**
+     * 使用数组构建一棵二叉树，数组形如 [3,9,20,null,null,15,7]
+     * 实现方式：使用递归方式，从上往下构建，退出条件式index超出数组大小
+     * 递归内容：分别构建左子树和右子树，再将左右子树作为root继续递归种下去
+     * 注意：某些数组采用了压缩形式，如 {1,2,3,null,4,null,null,5,6} 不支持，null不可因为没有父节点而省略
+     */
     public static TreeNode plantATree(Integer[] nodes){
         TreeNode root = new TreeNode(nodes[0]);
         buildTree(root, 0, nodes);
@@ -37,9 +42,5 @@ public class TreeNode {
                 buildTree(rightNode, rightIndex, nodes);
             }
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }

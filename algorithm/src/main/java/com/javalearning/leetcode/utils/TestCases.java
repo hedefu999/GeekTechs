@@ -4,6 +4,28 @@ import com.javalearning.leetcode.components.ListNode;
 import com.javalearning.leetcode.components.TreeNode;
 
 public class TestCases {
+/*  1
+ 2    5
+3 4  6
+    7
+* */public static Integer[] bt1 = {1,2,5,3,4,6,null,null,null,null,null,7,null};
+/*    1 15个节点，log2(length+1) =4,2^n-lenght-1==0,不需要加1层。n层
+  2       3
+5   4   8   9
+   6 7
+* */public static Integer[] bt2 = {1,2,3,5,4,8,9,null,null,6,7,null,null,null,null};
+/* 注意LeetCode的树表示数组 TreeNode#plantATree 不支持
+        1
+    2       3
+        4        5
+      6   7    8   9
+   10        11
+* */public static Integer[] bt3 = {
+                                     1,
+                                    2,3,
+                                null,null,4,5,
+                        null,null,null,null,6,7,8,9,
+null,null,null,null,null,null,null,null,10,null,null,null,11,null,null,null};
     //股票最大利润问题
     public static int[] prices0 = {3,2,5,6,10,9,7,11,14};//15:
     public static int[] prices1 = {7,1,5,3,6,4};//7:1-5,3-6
