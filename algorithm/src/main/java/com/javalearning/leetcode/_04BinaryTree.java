@@ -1,6 +1,7 @@
 package com.javalearning.leetcode;
 
 import com.javalearning.leetcode.components.ListNode;
+import com.javalearning.leetcode.components.MultiTreeNode;
 import com.javalearning.leetcode.components.TreeNode;
 import com.javalearning.leetcode.utils.TestCases;
 import org.junit.jupiter.api.Test;
@@ -194,13 +195,47 @@ static int tellMeDistance(TreeNode root){
     return distance + 1;
 }
 
-/**
-讲解过于跳跃，先记下来 todo 上周进度 打通网络
+/**-=-=-=-=-=-=-= 动态规划/回溯/DFS算法的区别 =-=-=-=-=-=-=-=*/
+/*动态规划分解问题的思路
+数一棵二叉树上有多少个节点
+相同结构的子问题类比到二叉树上就是子树
+ */
+static int count(TreeNode root){
+    if (root == null) return 0;
+    int leftCount = count(root.left);
+    int rightCount = count(root.right);
+    return leftCount + rightCount + 1;//在后序位置累加
+}
+// 斐波那契数列,关注点同样是一棵棵子树的返回值上
+static int fibnacci(int N){
+    if (N==1||N==2) return 1;
+    return fibnacci(N-1) + fibnacci(N-2);
+}
+//回溯算法，从二叉树的遍历到多叉树的遍历
+static void traverse2(TreeNode root){
+    if (root == null) return;
+    System.out.printf("从节点%s进入节点%s", root, root.left);
+    traverse2(root.left);
+    System.out.printf("从节点%s回到节点%s", root.left, root);
+    traverse2(root.right);
+}
+static void traverseMultiTree(MultiTreeNode root){
+    if (root == null) return;
+
+}
+/*
+动态规划、回溯算法就是二叉树算法两种不同的表现形式
+todo 一文秒杀所有岛屿题目 https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/yi-wen-mia-4f482/
+DFS算法和回溯非常类似，差别在于做选择 和 撤销选择，在for循环内外的区别
+
+讲解过于跳跃，先记下来
 动归/DFS/回溯算法都可以看做二叉树问题的扩展，只是它们的关注点不同：
 动态规划算法属于分解问题的思路，它的关注点在整棵「子树」。
 回溯算法属于遍历的思路，它的关注点在节点间的「树枝」。
 DFS 算法属于遍历的思路，它的关注点在单个「节点」。
 */
+
+
     public static void main(String[] args) {
         Integer[] i1 = {1, 2, 3};
         Integer[] i2 = {-10, 9, 20, null, null, 15, 7};
