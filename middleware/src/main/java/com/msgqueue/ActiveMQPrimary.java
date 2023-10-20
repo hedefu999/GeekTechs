@@ -2,7 +2,6 @@ package com.msgqueue;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.transport.stomp.StompConnection;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -129,18 +128,18 @@ public class ActiveMQPrimary {
     //如果使用spring框架接入 ActiveMQ 还需要 引入 spring-jms activemq-pool依赖
 
     //ActiveMQ服务端发送消息，浏览器端可以通过stomp.js接收消息
-    static class ServerSendMsg{
-        static void stompProducer() throws Exception{
-            StompConnection stompConn = new StompConnection();
-            stompConn.open("localhost", 61613);
-            stompConn.connect(ActiveMQConnection.DEFAULT_USER, ActiveMQConnection.DEFAULT_PASSWORD);
-            String message = "<a href=\"https://www.baidu.com\" target=\"_black\">购物广告</a>";
-            stompConn.send("/topic/shopping-discount", message);
-
-            stompConn.disconnect();
-            stompConn.close();
-        }
-    }
+    //static class ServerSendMsg{
+    //    static void stompProducer() throws Exception{
+    //        StompConnection stompConn = new StompConnection();
+    //        stompConn.open("localhost", 61613);
+    //        stompConn.connect(ActiveMQConnection.DEFAULT_USER, ActiveMQConnection.DEFAULT_PASSWORD);
+    //        String message = "<a href=\"https://www.baidu.com\" target=\"_black\">购物广告</a>";
+    //        stompConn.send("/topic/shopping-discount", message);
+    //
+    //        stompConn.disconnect();
+    //        stompConn.close();
+    //    }
+    //}
 
     //ActiveMQ 事务消息
     static class TransactionMQ{
