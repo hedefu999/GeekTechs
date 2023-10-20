@@ -261,11 +261,11 @@ static void backtrace(int[] nums){
 
 /**
 动态规划、回溯算法就是二叉树算法两种不同的表现形式
-todo BFS算法框架 https://labuladong.github.io/algo/di-ling-zh-bfe1b/bfs-suan-f-463fd/
+
 todo 一文秒杀所有岛屿题目(DFS算法) https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/yi-wen-mia-4f482/
 todo 回溯算法框架套路详解 https://labuladong.github.io/algo/di-ling-zh-bfe1b/hui-su-sua-c26da/
 todo 回溯算法秒杀排列组合子集的九种题型 https://labuladong.github.io/algo/di-ling-zh-bfe1b/hui-su-sua-56e11/
-todo Dijkstra算法 https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-03a72/dijkstra-s-6d0b2/
+todo Dijkstra算法模板框架 https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-03a72/dijkstra-s-6d0b2/
 
 动归/DFS/回溯算法都可以看做二叉树问题的扩展，只是它们的关注点不同：
 动态规划算法属于分解问题的思路，它的关注点在整棵「子树」。
@@ -299,6 +299,7 @@ static void backstrace(MultiTreeNode root){
 }
 /**LC102 二叉树层序遍历
  此题类似LC366 剥离叶子节点
+ 类似 LC515、LC111
  */
 static int depth = 0;
 static List<List<Integer>> levelOrder(TreeNode root) {
@@ -385,8 +386,28 @@ static void levelTraverse(List<TreeNode> currentLevelNodes){
 }
 
 /** LC515 在每个树行中找最大值
-
-*/
+*/static List<Integer> largestValues(TreeNode root) {
+    List<Integer> currentLevelMax = new ArrayList<>();
+    if (root == null) return currentLevelMax;
+    LinkedList<TreeNode> nodes = new LinkedList<>();
+    nodes.offer(root);
+    while (!nodes.isEmpty()){
+        int currentMax = Integer.MIN_VALUE;
+        int currentSize = nodes.size();//这个不能放到下面一行里
+        for (int i = 0; i < currentSize; i++) {
+            TreeNode current = nodes.poll();
+            if (current.left != null){
+                nodes.offer(current.left);
+            }
+            if (current.right != null){
+                nodes.offer(current.right);
+            }
+            currentMax = currentMax < current.val ? current.val : currentMax;
+        }
+        currentLevelMax.add(currentMax);
+    }
+    return currentLevelMax;
+}
 
 
     public static void main(String[] args) {
@@ -395,9 +416,10 @@ static void levelTraverse(List<TreeNode> currentLevelNodes){
         Integer[] i3 = {-1,-2, 3};
         Integer[] i4 = {1,2,3,4,5,null,null};
         Integer[] i5 = {3,9,20,5,9,15,7};
-        TreeNode treeNode = TreeNode.plantATree(i5);
-        List<List<Integer>> lists = levelTraverse(treeNode);
-        System.out.println(lists);
+        Integer[] i6 = {1,3,2,5,3,null,9};
+        Integer[] i7 = {};
+        TreeNode treeNode = TreeNode.plantATree(i7);
+        System.out.println(largestValues(treeNode));
     }
 
 //endregion

@@ -19,6 +19,9 @@ public class TreeNode {
      * 注意：某些数组采用了压缩形式，如 {1,2,3,null,4,null,null,5,6} 不支持，null不可因为没有父节点而省略
      */
     public static TreeNode plantATree(Integer[] nodes){
+        if (nodes == null || nodes.length == 0){
+            return null;
+        }
         TreeNode root = new TreeNode(nodes[0]);
         buildTree(root, 0, nodes);
         return root;
