@@ -61,6 +61,17 @@ public class PrintUtils {
         System.out.println(Arrays.toString(nums));
     }
 
+    public static void printTwoDimIntMatrix(int[][] nums){
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums[i].length; j++) {
+                System.out.printf("%d     ", nums[i][j]);
+            }
+            System.out.println("\n");
+        }
+    }
+
+
+
     public static void main(String[] args) {
         boolean[][] input = {{true,  true,  true,true},
                 {false, true,  false,true},

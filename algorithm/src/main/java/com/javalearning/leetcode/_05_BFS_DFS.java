@@ -1,13 +1,9 @@
 package com.javalearning.leetcode;
 
 import com.javalearning.leetcode.components.TreeNode;
+import com.javalearning.leetcode.utils.PrintUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -177,17 +173,7 @@ todo 手把手刷二叉树（纲领篇） https://labuladong.github.io/algo/di-l
 todo 图论算法基础 https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-03a72/tu-lun-ji--d55b2/
 todo 回溯算法秒杀排列组合子集的九种题型 https://labuladong.github.io/algo/di-ling-zh-bfe1b/hui-su-sua-56e11/
 todo 多叉树DFS遍历框架的前序位置和后序位置应该在 for 循环外面，但回溯算法却是在for循环里面，原因？ https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-03a72/tu-lun-ji--d55b2/
-区别：DFS算法遍历节点，回溯算法遍历树枝；
-回溯算法框架
- resutl = []
- def backtrack(路径，选择列表):
-    if 满足结束条件：
-        result.add(路径)
-        return
-    for 选择 in 选择列表：
-        做选择
-        backtrack(路径，选择列表)
-        撤销选择
+todo 回溯算法秒杀数独问题 https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-9e939/
 */
 //region
 /* +LC46 数组数字的全排列
@@ -195,7 +181,8 @@ todo 多叉树DFS遍历框架的前序位置和后序位置应该在 for 循环�
 人脑解决这个问题就是先确定第一位，三种可能
 数字不允许重复，数字使用过就不能使用,维护一个集合添加移除数字很麻烦，但通过标记位维护就方便些
 确定当前数字存在很多可能，这就可以通过递归实现，数字是否使用过可以通过递归进入和退出进行维护
-*/static void backtrack(int[] nums, List<Integer> oneOrder, boolean[] used){
+*/
+static void backtrack(int[] nums, List<Integer> oneOrder, boolean[] used){
     if (oneOrder.size() == nums.length){
         backtrackRes.add(new LinkedList<>(oneOrder));
         return;
@@ -217,26 +204,189 @@ static List<List<Integer>> permute(int[] nums) {
     return backtrackRes;
 }
 
-/* LC51
+/* LC51 N皇后问题
 
+*/static List<List<String>> solveNQueens(int n) {
+    res.clear();
+    int[][] flags = new int[n][n];
+    backtrackLC51(flags,0);
+    return res;
+}
+static final List<List<String>> res = new ArrayList<>();
+//使用 1 0 -1 -2 ...标记一个棋盘位置状态，1-已放置一个皇后；0-可放置一个皇后；-N <= -1 被N个皇后禁止；
+static void backtrackLC51(int[][] flags, int currentLine){
+    if (currentLine == flags.length){ //收集最终解
+        convertFlagsToList(flags, res);
+        return;
+    }
+    //一开始设想的是两层for循环，再进入递归，后来发现递归本身就有一个遍历的效果，所以按行递归就能解决问题了
+    //而且一行放置了一个皇后，直接处理下一行，不必再forj遍历，所以不是两层for循环
+    for (int i = 0; i < flags.length; i++) {
+        //不过要先看看是否能放置
+        if (flags[currentLine][i] < 0) continue;
+        //第i行第j列放置一个Q，则能确定很多位置无法放置
+        flags[currentLine][i]=1;
+        adjustBanCount(flags,currentLine,i,-1);
+        //进入递归回溯
+        backtrackLC51(flags, currentLine+1);
+        //恢复现场
+        flags[currentLine][i]=0;
+        adjustBanCount(flags,currentLine,i,1);
+    }
+}
+static void convertFlagsToList(int[][] flags,List<List<String>> res){
+    List<String> line = new ArrayList<>();
+    for (int i = 0; i < flags.length; i++) {
+        char[] chars = new char[flags.length];
+        for (int j = 0; j < flags.length; j++) {
+            if (flags[i][j]==1){
+                chars[j] = 'Q';
+            }else {
+                chars[j] = '.';
+            }
+        }
+        line.add(new String(chars));
+    }
+    res.add(line);
+}
+static void adjustBanCount(int[][] flags, int i, int j, int delta){
+    //固定x轴i横向来一波
+    for (int l = 0; l < flags.length; l++) {
+        if (l==j) continue;
+        flags[i][l] += delta;
+    }
+    //纵向来一波
+    for (int k = 0; k < flags.length; k++) {
+        if (k==i) continue;
+        flags[k][j] += delta;
+    }
+    //从 i,j出发 四个方向来一波
+    adjustDiagonalBanCount(flags,i,j,delta,1,-1);
+    adjustDiagonalBanCount(flags,i,j,delta,1,1);
+    adjustDiagonalBanCount(flags,i,j,delta,-1,1);
+    adjustDiagonalBanCount(flags,i,j,delta,-1,-1);
+
+}
+static void adjustDiagonalBanCount(int[][] flags, int i, int j, int delta, int delta_i, int delta_j){
+    for (int x=i+delta_i,y=j+delta_j; 0<=x && x<flags.length && 0<=y && y<flags.length; x+=delta_i,y+=delta_j) {
+        flags[x][y] += delta;
+    }
+}
+static void printNQueuesRes(List<List<String>> res){
+    for (List<String> list : res) {
+        for (String s : list) {
+            for (int i = 0; i < s.length(); i++) {
+                System.out.printf("%s    ", s.charAt(i));
+            }
+            System.out.println();
+
+        }
+        System.out.println("-=-=-=-=-=-=-=-=-=-=-");
+    }
+}
+/*
+上述算法性能很弱，可以优化：
+- 判断一个皇后能不能放置，不一定要记录状态到一个数组，可以从当前皇后出发，直接判断攻击路线上是否有其他皇后，这样根本不需要flags状态二维数组
+- 攻击路线的检查可以只往上看，忽略掉 左下 正下 右下 路线的检查
 */
-
 /* LC52
 
 */
+/**
+ BFS 广度优先，需要借助集合收集每层的节点，这样可以避免不必要的深度递归，及早返回
+ DFS 深度优先，需要明确走到二叉树叶子节点才能结束，就像上面的求解，就需要借助递归堆栈向深处完成一个符合要求的解的遍历
+ 还有一类算法叫 回溯算法，与DFS很类似，但有细微差别
+  回溯算法是在遍历树枝，DFS算法是在遍历节点
+全排列 和 N皇后问题 是两个经典的回溯算法问题，本质上都是一棵多叉树的遍历
+ 回溯算法框架
+ resutl = []
+ def backtrack(路径，选择列表):
+    if 满足结束条件：
+        result.add(路径)
+        return
+    for 选择 in 选择列表：
+        （进入此节点）做选择
+        backtrack(路径，选择列表)
+        （离开此节点）撤销选择
+ */
+//endregion
+
+//region 回溯算法 阶段二 排列组合子集问题
+/**
+通常都是从序列 nums 中以给定规则取若干元素，规则通常有下述几种
+ - 元素无重不可复选 如2，3，6，7中和为7的组合只有7
+ - 元素可重不可复选 如2，5，2，1，2中和为7的组合有[2,2,2,1][5,2]
+ - 元素无重可复选   如2，3，6，7 和为7的组合有 [2,2,3] [7]
+ */
+/* LC78 subsets 给定元素唯一，返回所有可能的子集，子集中元素不讲究顺序
+子集之间不可重复，[1,2,3]中选2个元素，人的思路是：
+    2
+1<  3
+2 < 3 -- 这不是排列组合，不能重复，所以一个起始元素只能向后选，不可以向前看；
+3 - X -- 最后一个元素无法向后凑齐两个，所以不算了
+通过保证元素之间的相对顺序不变来防止出现重复的子集
+*/static List<List<Integer>> subsets(int[] nums) {
+    LinkedList<Integer> currentItems = new LinkedList<>();
+    List<List<Integer>> res = new ArrayList<>();
+    for (int itemCount = 0; itemCount <= nums.length; itemCount++) {
+        backtrackLC78(nums, currentItems, res, itemCount, 0);
+    }
+    return res;
+}
+/*
+子集问题涉及一个典型的 C(n,m) 问题 = n!/m!  这样上面的子集问题就是寻找m从 0到n 的子集结果
+int[] nums = {1,2,3,4};
+System.out.println(soluteCnm(nums, 3));
+*/
+static List<List<Integer>> soluteCnm(int[] nums, int m){
+    LinkedList<Integer> currentItems = new LinkedList<>();
+    List<List<Integer>> res = new ArrayList<>();
+    backtrackLC78(nums, currentItems, res, m, 0);
+    return res;
+}
+static void backtrackLC78(int[] nums, LinkedList<Integer> currentItems, List<List<Integer>> res, int itemCount, int startIndex){
+    if (itemCount == 0) {
+        res.add(new ArrayList<>(currentItems));
+        return;
+    }
+    if (startIndex >= nums.length){
+        return;
+    }
+    for (int i = startIndex; i < nums.length; i++) {
+        currentItems.offer(nums[i]);
+        backtrackLC78(nums, currentItems,res,itemCount-1, i+1);
+        currentItems.pollLast();
+    }
+}
+/* LC78 子集问题的简化思路
+可以抽象成对一棵多叉树的遍历，求解的过程就是收集这棵多叉树的所有节点
+            []
+     1      2     3
+   12 13  23
+123
+*/
+static LinkedList<Integer> trackLC78 = new LinkedList<>();
+static List<List<Integer>> subsets2(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>();
+    backtrack2LC78(nums, 0, trackLC78, res);
+    return res;
+}
+static void backtrack2LC78(int[] nums, int startIndex, LinkedList<Integer> currentSet, List<List<Integer>> res){
+    if (startIndex == nums.length){
+        return;
+    }
+    res.add(new LinkedList<>(currentSet));
+    for (int i = startIndex; i < nums.length; i++) {
+        currentSet.addLast(nums[i]);
+        backtrack2LC78(nums, startIndex+1, currentSet, res);
+        currentSet.removeLast();
+    }
+}
+
 //endregion
 
     public static void main(String[] args) {
-        Integer[] t1 = {2,
-                null,3,
-                null,null,null,4,
-                null,null,null,null,null,null,null,5,
-                null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,6};
-        Integer[] t2 = {3,9,20,null,null,15,7};
+        System.out.println(subsets2(new int[]{1,2,3}));
 
-        int[] lc46_1 = {1,2,3};
-        int[] lc46_2 = {0,1};
-        int[] lc46_3 = {};
-        System.out.println(permute(lc46_3));
     }
 }
