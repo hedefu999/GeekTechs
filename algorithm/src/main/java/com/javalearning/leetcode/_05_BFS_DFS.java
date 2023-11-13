@@ -2,10 +2,10 @@ package com.javalearning.leetcode;
 
 import com.javalearning.leetcode.components.TreeNode;
 import com.javalearning.leetcode.utils.PrintUtils;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**-=-=-=-=-=-= BFS（Breadth First Search,宽度优先搜索） =-=-=-=-=-=-*/
 //region
@@ -42,6 +42,7 @@ int BFS(Node start, Node target){
  二叉树不存在子节点回到父节点的指针，不需要visited集合避免走回头路
 */
 public class _05_BFS_DFS {
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(_05_BFS_DFS.class);
 /** LC111 二叉树的最小深度
 这一问题适合采用广度优先搜索算法BFS，深度优先搜索DFS也可以，但要遍历完毕所有路径再比较大小才能出结果
  BFS层序遍历，齐头并进式的搜索可以节省不必要深度搜索
@@ -186,7 +187,7 @@ static void backtrack(int[] nums, List<Integer> oneOrder, boolean[] used){
     if (oneOrder.size() == nums.length){
         backtrackRes.add(new LinkedList<>(oneOrder));
         return;
-    }
+    }//DFS回溯的一个典型特征：在for循环内部调递归函数，前后会分别进行写入擦除操作
     for (int i = 0; i < nums.length; i++) {
         if (used[i]) continue;
         oneOrder.add(nums[i]);
@@ -205,18 +206,17 @@ static List<List<Integer>> permute(int[] nums) {
 }
 
 /* LC51 N皇后问题
-
 */static List<List<String>> solveNQueens(int n) {
-    res.clear();
+    resLC51.clear();
     int[][] flags = new int[n][n];
     backtrackLC51(flags,0);
-    return res;
+    return resLC51;
 }
-static final List<List<String>> res = new ArrayList<>();
+static final List<List<String>> resLC51 = new ArrayList<>();
 //使用 1 0 -1 -2 ...标记一个棋盘位置状态，1-已放置一个皇后；0-可放置一个皇后；-N <= -1 被N个皇后禁止；
 static void backtrackLC51(int[][] flags, int currentLine){
     if (currentLine == flags.length){ //收集最终解
-        convertFlagsToList(flags, res);
+        convertFlagsToList(flags, resLC51);
         return;
     }
     //一开始设想的是两层for循环，再进入递归，后来发现递归本身就有一个遍历的效果，所以按行递归就能解决问题了
@@ -288,10 +288,87 @@ static void printNQueuesRes(List<List<String>> res){
 上述算法性能很弱，可以优化：
 - 判断一个皇后能不能放置，不一定要记录状态到一个数组，可以从当前皇后出发，直接判断攻击路线上是否有其他皇后，这样根本不需要flags状态二维数组
 - 攻击路线的检查可以只往上看，忽略掉 左下 正下 右下 路线的检查
-*/
+*/static List<List<String>> solveNQueens2(int n) {
+    List<List<String>> resLC51 = new ArrayList<>();
+    List<String> res = new ArrayList<>();
+    char[] chars = new char[n];
+    for (int i = 0; i < n; i++) {
+        chars[i] = '.';
+    }
+    String primary = new String(chars);
+    for (int i = 0; i < n; i++) {
+        res.add(primary);
+    }
+    backtrack2LC51(n, 0, res, resLC51);
+    return resLC51;
+}
+static void backtrack2LC51(int n, int row, List<String> res, List<List<String>> resLC51){
+    if (row >= n){
+        resLC51.add(new ArrayList<>(res));
+        return;
+    }
+    for (int column = 0; column < n; column++) {
+        if (!checkSafety(res, row, column)){
+            continue;
+        }
+        String line = replaceCharAt(res.get(row), column, 'Q');res.set(row, line);
+        backtrack2LC51(n, row+1, res, resLC51);
+        line = replaceCharAt(res.get(row), column, '.');res.set(row, line);
+    }
+}
+static boolean checkSafety(List<String> res, int x, int y){
+    //查看上方是否有皇后
+    for (int i = x; i >= 0; i--) {
+        char info = res.get(i).charAt(y);
+        if (info == 'Q') return false;
+    }
+    //查看左上方是否有皇后
+    for (int i=x,j=y; i>=0 && j>=0; i--,j--) {
+        char info = res.get(i).charAt(j);
+        if (info == 'Q') return false;
+    }
+    //查看右上方是否有皇后
+    for (int i=x,j=y; i>=0 && j<res.size(); i--,j++) {
+        char info = res.get(i).charAt(j);
+        if (info == 'Q') return false;
+    }
+    return true;
+}
+static String replaceCharAt(String input, int index, char replacement){
+    char[] chars = input.toCharArray();
+    chars[index] = replacement;
+    return new String(chars);
+}
 /* LC52
-
 */
+static Integer solveNQueens3(int n) {
+    AtomicInteger ai = new AtomicInteger(0);
+    List<String> res = new ArrayList<>();
+    char[] chars = new char[n];
+    for (int i = 0; i < n; i++) {
+        chars[i] = '.';
+    }
+    String primary = new String(chars);
+    for (int i = 0; i < n; i++) {
+        res.add(primary);
+    }
+    backtrack2LC51(n, 0, res, ai);
+    return ai.get();
+}
+static void backtrack2LC51(int n, int row, List<String> res, AtomicInteger count){
+    if (row >= n){
+        count.incrementAndGet();
+        return;
+    }
+    for (int column = 0; column < n; column++) {
+        if (!checkSafety(res, row, column)){
+            continue;
+        }
+        String line = replaceCharAt(res.get(row), column, 'Q');res.set(row, line);
+        backtrack2LC51(n, row+1, res, count);
+        line = replaceCharAt(res.get(row), column, '.');res.set(row, line);
+    }
+}
 /**
  BFS 广度优先，需要借助集合收集每层的节点，这样可以避免不必要的深度递归，及早返回
  DFS 深度优先，需要明确走到二叉树叶子节点才能结束，就像上面的求解，就需要借助递归堆栈向深处完成一个符合要求的解的遍历
@@ -311,7 +388,7 @@ static void printNQueuesRes(List<List<String>> res){
  */
 //endregion
 
-//region 回溯算法 阶段二 排列组合子集问题
+//region 回溯算法 阶段二 排列组合、子集问题
 /**
 通常都是从序列 nums 中以给定规则取若干元素，规则通常有下述几种
  - 元素无重不可复选 如2，3，6，7中和为7的组合只有7
@@ -367,18 +444,20 @@ static void backtrackLC78(int[] nums, LinkedList<Integer> currentItems, List<Lis
 */
 static LinkedList<Integer> trackLC78 = new LinkedList<>();
 static List<List<Integer>> subsets2(int[] nums) {
+    trackLC78.clear();
     List<List<Integer>> res = new ArrayList<>();
     backtrack2LC78(nums, 0, trackLC78, res);
     return res;
 }
 static void backtrack2LC78(int[] nums, int startIndex, LinkedList<Integer> currentSet, List<List<Integer>> res){
-    if (startIndex == nums.length){
-        return;
-    }
     res.add(new LinkedList<>(currentSet));
+    //if (startIndex == nums.length){ 不需要这个if，for循环里面会判断后退出的
+    //    return;
+    //}
     for (int i = startIndex; i < nums.length; i++) {
         currentSet.addLast(nums[i]);
-        backtrack2LC78(nums, startIndex+1, currentSet, res);
+        //注意这里是i+1，不是startIndex+1
+        backtrack2LC78(nums, i+1, currentSet, res);
         currentSet.removeLast();
     }
 }
@@ -386,7 +465,7 @@ static void backtrack2LC78(int[] nums, int startIndex, LinkedList<Integer> curre
 //endregion
 
     public static void main(String[] args) {
-        System.out.println(subsets2(new int[]{1,2,3}));
-
+        //System.out.println(subsets2(new int[]{1,2,3}));
+        System.out.println(solveNQueens3(5));
     }
 }
