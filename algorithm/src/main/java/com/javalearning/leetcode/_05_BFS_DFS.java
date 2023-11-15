@@ -391,17 +391,21 @@ static void backtrack2LC51(int n, int row, List<String> res, AtomicInteger count
 //region 回溯算法 阶段二 排列组合、子集问题
 /**
 通常都是从序列 nums 中以给定规则取若干元素，规则通常有下述几种
- - 元素无重不可复选 如2，3，6，7中和为7的组合只有7
+ - 元素无重不可复选 如2，3，6，7中和为7的组合只有7；LC46 全排列问题
  - 元素可重不可复选 如2，5，2，1，2中和为7的组合有[2,2,2,1][5,2]
  - 元素无重可复选   如2，3，6，7 和为7的组合有 [2,2,3] [7]
+ 解决这类问题的关键是：先把多叉树画出来，想好怎么通过递归回溯遍历树枝/树叶出结果
+ 最后你会发现，testcase给出的答案的子集顺序可以拿来验证自己花的树是否正确！
  */
 /* LC78 subsets 给定元素唯一，返回所有可能的子集，子集中元素不讲究顺序
 子集之间不可重复，[1,2,3]中选2个元素，人的思路是：
     2
-1<  3
+1<
+    3
 2 < 3 -- 这不是排列组合，不能重复，所以一个起始元素只能向后选，不可以向前看；
 3 - X -- 最后一个元素无法向后凑齐两个，所以不算了
 通过保证元素之间的相对顺序不变来防止出现重复的子集
+这种只能向后取元素的思路，跟排列组合有一定不同
 */static List<List<Integer>> subsets(int[] nums) {
     LinkedList<Integer> currentItems = new LinkedList<>();
     List<List<Integer>> res = new ArrayList<>();
@@ -426,9 +430,9 @@ static void backtrackLC78(int[] nums, LinkedList<Integer> currentItems, List<Lis
         res.add(new ArrayList<>(currentItems));
         return;
     }
-    if (startIndex >= nums.length){
-        return;
-    }
+//    if (startIndex >= nums.length){ for循环有判断效果
+//        return;
+//    }
     for (int i = startIndex; i < nums.length; i++) {
         currentItems.offer(nums[i]);
         backtrackLC78(nums, currentItems,res,itemCount-1, i+1);
@@ -461,11 +465,134 @@ static void backtrack2LC78(int[] nums, int startIndex, LinkedList<Integer> curre
         currentSet.removeLast();
     }
 }
-
+/* LC77 组合 1-n 的自然数中选择 k 个，返回所有可能的子集/组合
+借助前面写的求解 C(n,m) 的方法
+简化思路 - 还是上面 LC78 那棵多叉树，只要第 k 层的节点集合
+*/
+static List<List<Integer>> combine(int n, int k) {
+    int[] nums = new int[n];
+    for (int i = 0; i < n; i++) {
+        nums[i] = i+1;
+    }
+    return soluteCnm(nums, k);
+}
+static List<List<Integer>> combine2(int n, int k) {
+    LinkedList<Integer> currentSet = new LinkedList<>();
+    List<List<Integer>> res = new ArrayList<>();
+    backtrack2LC77(n+1,k,1,currentSet,res);
+    return res;
+}
+static void backtrack2LC77(int n, int k, int startIndex, LinkedList<Integer> currentSet, List<List<Integer>> res){
+    if (currentSet.size() == k){
+        res.add(new ArrayList<Integer>(currentSet));
+        return;
+    }
+    //剪枝优化性能 i<n 改成 i <= (n+currentSet.size()-k)
+    for (int i = startIndex; i < n; i++) {
+        currentSet.addLast(i);
+        backtrack2LC77(n, k, i+1, currentSet, res);
+        currentSet.removeLast();
+    }
+}
+//元素可重不可复选，nums中存在重复元素
+/* LC90 子集II
+nums=[1,2,2] [[],[1],[1,2],[1,2,2],[2],[2,2]]
+据说计算机的很多问题可以抽象成一棵树
+   [] -- 向后，用过的元素不能再用，累积一路遇到的节点到集合里作为子集
+  1  2
+ 2    2
+2
+[1,1,3,4] 有3个distinct元素，所以是三叉树，每一层要伸出剩下的distinct元素数量的树枝
+        []    --[1][1,1][1,1,3][1,1,3,4][1,1,4][1,3][1,3,4][1,4][3][3,4][4]
+    1        3    4
+  1   3  4   4
+ 3  4 4
+4
+[4,4,1,4]
+       []
+     4     1
+   4   1   4
+ 1  4  4
+4
+[[], [1], [1, 1], [1, 1, 1], [1, 1, 1, 3], [1, 1, 1, 3, 4], [1, 1, 1, 4], [1, 1, 3], [1, 1, 3, 4], [1, 1, 4], [1, 3], [1, 3, 4], [1, 4], [3], [3, 4], [4]]
+System.out.println(subsetsWithDup(new int[]{1,1,1,3,4}));
+[[], [1], [1, 4], [1, 4, 4], [1, 4, 4, 4], [1, 4, 4, 4, 4], [4], [4, 4], [4, 4, 4], [4, 4, 4, 4]]
+System.out.println(subsetsWithDup(new int[]{4,4,4,1,4}));
+*/
+static List<List<Integer>> subsetsWithDup(int[] nums) {
+    LinkedList<Integer> curr = new LinkedList<>();
+    List<List<Integer>> res = new ArrayList<>();
+    Arrays.sort(nums);
+//    backtrackLC90(nums, 0, curr, res,new HashSet<>());
+    backtrack2LC90(nums, 0, curr, res);
+    return res;
+}
+//Set解法无法在不排序的情况下处理 4,4,4,1,4 的子集问题
+//static void backtrackLC90(int[] nums, int startIndex, LinkedList<Integer> currentSet, List<List<Integer>> res, Set<Integer> distinctNums){
+//    res.add(new ArrayList<>(currentSet));
+//    //int preSameLevelItem = -99; [4,4,1,4] 可以推翻这种去重方案,要保证在同一层元素不重复，所以进入递归要清除set，返回递归又要恢复，干脆new一个进去吧
+//    for (int i = startIndex; i < nums.length; i++) {
+//        if (distinctNums.contains(nums[i])) continue;
+//        distinctNums.add(nums[i]);
+//        currentSet.addLast(nums[i]);//出现无端元素重复了就请注意这里的i+1是不是写成startIndex+1了
+//        backtrackLC90(nums, i+1, currentSet, res, new HashSet<>());
+//        currentSet.removeLast();
+//    }
+//}
+static void backtrack2LC90(int[] nums, int startIndex, LinkedList<Integer> currentSet, List<List<Integer>> res){
+    res.add(new ArrayList<>(currentSet));
+    int preSameLevelItem = -99; //[4,4,1,4] 可以推翻这种去重方案,但既然1混在中间干扰判断，那就先排个序吧
+    for (int i = startIndex; i < nums.length; i++) {
+        //preSameLevelItem==... 改成 i > start && nums[i] == nums[i - 1] 比较，可以节约内存
+        if (preSameLevelItem == nums[i]) continue;
+        preSameLevelItem = nums[i];
+        currentSet.addLast(nums[i]);//出现无端元素重复了就请注意这里的i+1是不是写成startIndex+1了
+        backtrack2LC90(nums, i+1, currentSet, res);
+        currentSet.removeLast();
+    }
+}
 //endregion
-
+/* LC40 Combination Sum II
+[10,1,2,7,6,1,5] = 8: [[1,1,6],[1,2,5],[1,7],[2,6]]
+[1,1,2,5,6,7,10]
+    1                 2  5  6  7 10
+ 1     2    5  6 [7]
+25[6] [5]  6   7
+System.out.println(combinationSum2(new int[]{10,1,2,7,6,1,5},8));
+System.out.println(combinationSum2(new int[]{2,5,2,1,2},5));
+*/
+static List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    Arrays.sort(candidates);
+    LinkedList<Integer> curr = new LinkedList<>();
+    List<List<Integer>> res = new ArrayList<>();
+    backtrackLC40(candidates, target, 0, 0, curr, res);
+    return res;
+}
+static void backtrackLC40(int[] nums, int target, int startIndex, int currentSum, LinkedList<Integer> currentItems, List<List<Integer>> res){
+    if (currentSum == target){
+        res.add(new ArrayList<>(currentItems));
+        return;
+    }
+    for (int i = startIndex; i < nums.length; i++) {
+        //同一层的不能重复
+        if (i>startIndex && nums[i] == nums[i-1]) continue;
+        //走到和超过target的树枝上，可以剪枝了，直接return，由于是在递归里，不会全退出去
+        if (currentSum + nums[i] > target) return;
+        //纳入这个节点
+        currentItems.addLast(nums[i]);
+        currentSum+=nums[i];
+        backtrackLC40(nums, target, i+1,currentSum, currentItems, res);
+        //恢复现场，回到上一层，removeLast返回的就是nums[i] 可以拿来用
+        currentItems.removeLast();
+        currentSum-=nums[i];
+    }
+}
+/* LC47 全排列II
+*/
     public static void main(String[] args) {
         //System.out.println(subsets2(new int[]{1,2,3}));
-        System.out.println(solveNQueens3(5));
+//        System.out.println(solveNQueens3(5));
+//        System.out.println(combine2(4,2));
+
     }
 }
