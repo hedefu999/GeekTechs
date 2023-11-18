@@ -587,12 +587,98 @@ static void backtrackLC40(int[] nums, int target, int startIndex, int currentSum
         currentSum-=nums[i];
     }
 }
-/* LC47 全排列II
+/* LC47 全排列II 元素有重复的
+[1,1,2] - [[1,1,2], [1,2,1], [2,1,1]]
+[1,1,2,3]
+横向画一颗多叉树比较方便，也接近人的思路
+1 - 1 - 2 - 3
+      - 3 - 2
+  - 2 - 1 - 3
+      - 3 - 1
+  - 3 - 1 - 2
+      - 2 - 1
+2 - 1 - 1 - 3
+      - 3 - 1
+  - 3 - 1 - 1
+3 - 1 - 1 - 2
+      - 2 - 1
+  - 2 - 1 - 1
+多叉树规律：每层总是在剩下的元素中按不重复（需要排序）原则开支，直到用完所有元素，收集树叶
+注意前面的元素也要参与，而不是仅从剩下的元素中取
+[1,2,3] - [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+*/
+static List<List<Integer>> permuteUnique(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>();
+    LinkedList<Integer> current = new LinkedList<>();
+    boolean[] used = new boolean[nums.length];
+    Arrays.sort(nums);
+    backtrackLC47(nums,used,res,current);
+    return res;
+}
+static void backtrackLC47(int[] nums, boolean[] used, List<List<Integer>> res, LinkedList<Integer> current){
+    if (current.size() == nums.length){
+        res.add(new ArrayList<>(current));
+    }
+    for (int i = 0; i < nums.length; i++) {
+        if (used[i]) continue;
+        //重复元素找全排列的麻烦在于：既要保证每层不重复（nums[i]!=nums[i-1]），又要从剩下的没用过的元素中选择（!used[i-1] 第二个相同元素要在下一轮使用上）
+        //这里每次从0开始有点性能弱，但要使用链表存储剩余可用元素，又要保证元素有序性，比较麻烦
+        //可重复元素的全排列的剪枝方法
+        // 教程中提到 !used[i-1]（前面的要用过才往下走）改成 used[i-1]（前面的没用过才能走当前元素的开支）也能得到正确结果，但效率会下降很多，是因为剪枝效率降低了，有些分支走了一部分放弃了
+        //去重的方法也可以采用前面写过的 记录previousItemValue的方法避免同层重复
+        if (i>0 && nums[i]==nums[i-1] && !used[i-1]) continue;
+        current.addLast(nums[i]);
+        used[i]=true;
+        backtrackLC47(nums, used, res, current);
+        current.removeLast();
+        used[i]=false;
+    }
+}
+/* LC39 Combination Sum 唯一元素求和得到目标值，元素可以无限重复使用
+[2,3,6,7] - 7 下面是一颗完整的回溯树，横向画法是人的思路，转置这棵树就是代码遍历出的一颗多叉树
+2 - 2 - 2 - 2
+        3+
+        6
+    3 - 3
+    6
+    7
+3 - 3 - 3
+    6
+6 - 6
+7+
+子集不可重复，所以元素向后选，不可向前选（223与232）
+收集叶子节点
+*/
+static List<List<Integer>> combinationSum(int[] candidates, int target) {
+    List<List<Integer>> res = new ArrayList<>();
+    LinkedList<Integer> current = new LinkedList<>();
+    int[] count = new int[candidates.length];
+    //这里限制了元素重复使用的最大次数 3 ，原题没有这个要求
+    backtrackLC39(candidates,target,0,0,res,current,count, 3);
+    return res;
+}
+static void backtrackLC39(int[] nums, int target,int currentSum, int startIndex, List<List<Integer>> res, LinkedList<Integer> current, int[] count, int maxCount){
+    if (currentSum == target){
+        res.add(new ArrayList<>(current));
+        return;
+    }
+    for (int i = startIndex; i < nums.length && currentSum < target; i++) {
+        if (count[i]>=3) continue;
+        count[i] += 1;
+        currentSum += nums[i];
+        current.addLast(nums[i]);
+        backtrackLC39(nums,target,currentSum,i,res,current,count,maxCount);
+        current.removeLast();
+        currentSum -= nums[i];
+        count[i] -= 1;
+    }
+}
+/* 第9中 排列组合问题 由于过于简单，LC无题
+唯一元素集合可重复选择得到全排列
+[1,2,3] 的可重复全排列共 3^3=27种
+实现上无需剪枝，不需要判重，不需要向后选择，代码过于简单，无考察价值，但适合回溯框架入门
 */
     public static void main(String[] args) {
-        //System.out.println(subsets2(new int[]{1,2,3}));
-//        System.out.println(solveNQueens3(5));
-//        System.out.println(combine2(4,2));
-
+        System.out.println(combinationSum(new int[]{5,2,3}, 8));
     }
 }
