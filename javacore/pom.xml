@@ -42,4 +42,19 @@
       <version>0.9</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <resources>
+      <!-- 从父目录继承资源 -->
+      <resource>
+        <directory>../</directory>
+        <includes>
+          <include>log4j2.xml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>/src/main/resources</directory>
+      </resource>
+    </resources>
+  </build>
 </project>

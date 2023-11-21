@@ -44,7 +44,7 @@
     <poi>3.17</poi>
     <guava>32.0.1-jre</guava>
     <guava-retrying>2.0.0</guava-retrying>
-    <caffine>3.1.1</caffine>
+    <caffeine>2.9.3</caffeine>
     <redission>3.22.1</redission>
     <elasticsearch>2.3.2</elasticsearch>
     <elasticsearch-rest-api>7.6.2</elasticsearch-rest-api>
@@ -59,6 +59,11 @@
         <version>${spring.boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>5.3.20</version>
       </dependency>
       <dependency>
         <groupId>org.projectlombok</groupId>
@@ -228,7 +233,7 @@
       <dependency>
         <groupId>com.github.ben-manes.caffeine</groupId>
         <artifactId>caffeine</artifactId>
-        <version>${caffine}</version>
+        <version>${caffeine}</version>
       </dependency>
       <!--分布式缓存-->
       <dependency>

@@ -31,7 +31,8 @@
         <!--输出控制台的配置-->
         <console name="console" target="SYSTEM_OUT">
             <thresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
-            <patternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%class{36}.%M:%L] >>> %msg%xEx%n"/>
+            <!-- [%C.%M:%L] 太长了不要了 -->
+            <patternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-4level] [%t] >>> %msg%xEx%n"/>
         </console>
         <!-- 设置日志格式并配置日志压缩策略，可以配置多个RollingFile存储不同级别的信息 -->
         <!--fileName与filePattern:未压缩的正在添加日志的文件/压缩文件-->
