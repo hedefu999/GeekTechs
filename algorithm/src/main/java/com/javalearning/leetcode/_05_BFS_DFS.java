@@ -10,7 +10,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**-=-=-=-=-=-= BFS（Breadth First Search,宽度优先搜索） =-=-=-=-=-=-*/
 //region
 /**
-BFS的思路：将问题抽象成图，从一个点开始，向四周扩散，通常BFS算法会使用队列保存一个节点周围的所有节点
+【参考资料】
+ 回溯算法解题套路框架 https://labuladong.github.io/algo/di-ling-zh-bfe1b/hui-su-sua-c26da/
+ 回溯算法秒杀排列组合子集的九种题型 https://labuladong.github.io/algo/di-ling-zh-bfe1b/hui-su-sua-56e11/
+
+
+ BFS的思路：将问题抽象成图，从一个点开始，向四周扩散，通常BFS算法会使用队列保存一个节点周围的所有节点
 BFS相对DFS的最主要区别：BFS找到的路径是最短的，但代价就是SC比DFS大很多
 
 BFS问题的本质就是在一幅“图”中找到从起点start到终点target的最近距离
@@ -169,13 +174,6 @@ static String roll(String lock, int index, int updown){
 //endregion
 
 /**-=-=-=-=--=-= DFS算法，深度优先搜索/回溯算法 =--=-=-=-=-=-=-=*/
-/**
-todo 手把手刷二叉树（纲领篇） https://labuladong.github.io/algo/di-ling-zh-bfe1b/dong-ge-da-334dd/
-todo 图论算法基础 https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-03a72/tu-lun-ji--d55b2/
-todo 回溯算法秒杀排列组合子集的九种题型 https://labuladong.github.io/algo/di-ling-zh-bfe1b/hui-su-sua-56e11/
-todo 多叉树DFS遍历框架的前序位置和后序位置应该在 for 循环外面，但回溯算法却是在for循环里面，原因？ https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-03a72/tu-lun-ji--d55b2/
-todo 回溯算法秒杀数独问题 https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-9e939/
-*/
 //region
 /* +LC46 数组数字的全排列
 可以很容易地想到多叉树，但不是真的构建一棵多叉树

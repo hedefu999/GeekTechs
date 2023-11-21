@@ -99,7 +99,15 @@ gitbook链接   [labuladong的算法小抄](https://labuladong.gitbook.io/algo/)
 
 手把手实现LRU算法
 手把手实现LFU算法
-DFS与BFS
+
+## DFS与BFS
+
+手把手刷二叉树（纲领篇） https://labuladong.github.io/algo/di-ling-zh-bfe1b/dong-ge-da-334dd/
+图论算法基础 https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-03a72/tu-lun-ji--d55b2/
+多叉树DFS遍历框架的前序位置和后序位置应该在 for 循环外面，但回溯算法却是在for循环里面，原因？ https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-03a72/tu-lun-ji--d55b2/
+回溯算法秒杀数独问题 https://labuladong.github.io/algo/di-san-zha-24031/bao-li-sou-96f79/hui-su-sua-9e939/
+回溯算法秒杀排列组合子集的九种题型 https://labuladong.github.io/algo/di-ling-zh-bfe1b/hui-su-sua-56e11/
+
 如何高效解决接雨水问题
 
 
