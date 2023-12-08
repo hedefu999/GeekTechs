@@ -132,14 +132,31 @@ public class AboutCompletableFuture {
         logger.info("任务执行状态：{} - {} - {}", future1.isDone(), future2.isDone(), future3.isDone());
     }
 
-    static void errorHandling(){
+    static void errorHandling() throws Exception{
+        CompletableFuture<String> handle = CompletableFuture.supplyAsync(() -> "hello").thenApply(str -> {
+            return str.charAt(1) > 'h';
+        }).handle(new BiFunction<Boolean, Throwable, String>() {
+            //handle方法会传递两个参数：正常执行的结果 和 异常执行时的throwable
+            //当正常执行时，throwable == null, 方法里的日志打印会发生空指针异常
+            @Override
+            public String apply(Boolean aBoolean, Throwable throwable) {
+                logger.info("handle 入参：aBoolean = {}, e = {}", aBoolean, throwable.getMessage());
+                return null;
+            }
+        });
+        System.out.println(handle.get());
 
+        //completeExceptionally方法
+        CompletableFuture<String> cf = new CompletableFuture<>();
+        cf.completeExceptionally(new RuntimeException("永远主动抛出异常"));
+        cf.get(); //一旦执行一个get就会抛异常，似乎没啥用
     }
 
     public static void main(String[] args) throws Exception{
         //Future<String> future = calcAsync();
         //String result = future.get();
         //logger.info("result = {}", result);
-        staticMethod4CompletableFuture();
+        //staticMethod4CompletableFuture();
+        //errorHandling();
     }
 }

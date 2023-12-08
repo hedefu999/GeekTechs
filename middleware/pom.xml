@@ -114,6 +114,10 @@
             <groupId>org.drools</groupId>
             <artifactId>drools-decisiontables</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.aviator</groupId>
+            <artifactId>aviator</artifactId>
+        </dependency>
         <!-- amazon S3 -->
         <dependency>
             <groupId>com.amazonaws</groupId>
