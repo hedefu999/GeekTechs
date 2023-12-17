@@ -1,7 +1,6 @@
 package com.javalearning.leetcode;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 
 /**
@@ -186,12 +185,93 @@ static boolean checkInclusion2(String s1, String s2) {
     }
     return false;
 }
+/** LC438 目标字符串中的相同字母的同异序词的startIndex收集
+ *  s= cbaebabacd, p= abc => [0,6]
+ *  abab,ab => [0,1,2]
+ *  这是一个定长滑动窗口问题
+ *  测试用例
+ System.out.println(findAnagrams("cbaebabacd", "abc"));
+ System.out.println(findAnagrams("cbaefbabacd", "abc"));
+ System.out.println(findAnagrams("abab", "ab"));
+ */
+static List<Integer> findAnagrams(String s, String p) {
+    List<Integer> answer = new ArrayList<>();
+    Map<Character, Integer> pMap = new HashMap<>();
+    for (int i = 0; i < p.length(); i++) {
+        pMap.compute(p.charAt(i), (key, count) -> pMap.getOrDefault(key, 0) + 1);
+    }
+    Map<Character, Integer> sMap = new HashMap<>();
+    int left=0,right=0;
+    int coverCount = 0;
+    while (right < s.length()){
+        char rightChar = s.charAt(right);
+        right++;
+        if (!pMap.containsKey(rightChar)){
+            continue;
+        }
+        sMap.compute(rightChar, (key,count) -> sMap.getOrDefault(key, 0) + 1);
+        if (sMap.get(rightChar).equals(pMap.get(rightChar))){
+            coverCount++;
+        }
+        while (left+p.length() <= right){
+            char leftChar = s.charAt(left);
+            if (pMap.containsKey(leftChar)) {
+                if ((left+p.length()) == right && coverCount == pMap.size()){
+                    answer.add(left);
+                }
+                if (sMap.get(leftChar).equals(pMap.get(leftChar))) {
+                    coverCount--;
+                }
+                sMap.put(leftChar, sMap.get(leftChar) - 1);
+            }
+            left++;
+        }
+    }
+    return answer;
+}
+/** LC3 最长无重复子串
+ * abcabcbb -> 3
+ * bbbb -> 1
+ * pwwkew -> 3
+ * pwwwwwwked
+ * 连续不重复的字符串，窗口右侧扩展遇到重复字符right就停下来
+ * 测试用例
+ System.out.println(lengthOfLongestSubstring("abcabcbb"));
+ System.out.println(lengthOfLongestSubstring("bbbb"));
+ System.out.println(lengthOfLongestSubstring("pwwkew"));
+ System.out.println(lengthOfLongestSubstring("pwwwwwwked"));
+ System.out.println(lengthOfLongestSubstring("wpwwwked"));
+ //right走到重复字符上left不能直接跳到right，这个是例子，需要逐个前进
+ System.out.println(lengthOfLongestSubstring("dvwxdf"));
+ System.out.println(lengthOfLongestSubstring("dvwxdfgh"));
+ */
+static int lengthOfLongestSubstring(String s) {
+    if (s == null || s.length() == 0){
+        return 0;
+    }
+    int res=1;
+    int left=0,right=0;
+    Set<Character> memos = new HashSet<>();
+    while (right < s.length()){
+        char rightChar = s.charAt(right);
+        while (memos.contains(rightChar)){
+            memos.remove(s.charAt(left));
+            left++;
+        }
+        res = Math.max(res, right-left + 1);
+        memos.add(rightChar);
+        right++;
+    }
+    return res;
+}
+/**
+ * 总结
+滑动窗口算法应用的关键是要确定：
+ 什么时候应该扩大窗口
+ 什么时候应该缩小窗口
+ 什么时候应该更新答案
+ */
     public static void main(String[] args) {
 
-        System.out.println(checkInclusion2("ab", "eidbaooo"));
-        System.out.println(checkInclusion2("ab", "eidboaoo"));
-        System.out.println(checkInclusion2("abb", "xyzababbxyz"));
-        System.out.println(checkInclusion2("abb", "xyzabxabbxyz"));
-        System.out.println(checkInclusion2("abb", "xyzabaxbbxyz"));
     }
 }
