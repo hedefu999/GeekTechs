@@ -199,8 +199,306 @@ static int dpLC32(int[] coins, int amount, int[] dp){
 }
 //endregion
 
-public static void main(String[] args) {
+//region 动态规划应用 - LC121\LC122\LC123\LC188\LC309\LC714 股票买卖的最佳时机，LC188 可以简化成其他股票问题）
+/**
+ 股票价格 price[i] 经过 k 次交易所能获得的最大利润
+ 每次交易要操作全部，全部卖出前不能买入，一次交易分为买入-卖出，相当于只能右侧低吸高抛
+ 2,[2,4,1] -> 2
+ 2,[3,2,6,5,0,3] -> 7
+    0 1 2 3 4 5
+ 股票交易问题的状态有 3 个
 
+ 状态转移方程
+ 先分析出状态：交易日i、至今至多进行的交易次数k、股票是否持有0-1 -> dp[i][k][0/1],注意k不是已交易次数
+ 对于长度n的数组 price[i] 至多进行K次交易的最大利润，就是求 dp[n-1][K][0]
+ 第i天卖出股票的最大盈利 dp[i][k][0] = 前一天(i-1)未持有股票的盈利，今天无操作 VS 前一天(i-1)持有了股票，今天卖出
+                          = max(dp[i-1][k][0], dp[i-1][k][1] + price[i])
+ 同样的，第i天持有股票的最大盈利 dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0]-price[i])
+ 所以得到解题框架八股文
+ int[][][] dp = new int[prices.length][k][2];
+ for (int i = 0; i < prices.length; i++) {
+     for (int j = 0; j < k; j++) {
+         dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i]);
+         dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i]);
+     }
+ }
+
+ LC121 k=1,至多进行1次交易的最大盈利
+ [7,1,5,3,6,4] -> 5
+ [7,6,4,3,1] -> 0
+ 由于k=1,三维dp数组可以简化降1维
+ */
+static int maxProfit(int[] prices) {
+    /*
+    在解之前需要降维，简单点
+    k=0时的dp三维数组都是0，问题简化为k值固定1，这个维度可以去掉
+    dp数组定义：价格数组prices下至多进行1次交易的最大盈利
+    dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+    dp[i][1] = max(dp[i-1][1], 0 - prices[i])
+    注意 dp[i-1][k-1][0] 在 k 确定为1时值为0
+    * */
+    int[][] dp = new int[prices.length][2];
+    dp[0][0]=0; dp[0][1]=-prices[0];
+    for (int i = 1; i < prices.length; i++) {
+        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i]);
+        dp[i][1] = Math.max(dp[i-1][1],  - prices[i]);
+        System.out.printf("第%d天空仓收益%d，满仓收益%d\n",i,dp[i][0],dp[i][1]);
+    }
+    return dp[prices.length-1][0];
+}
+/*
+通常动态规划的优化路径是：符合常人思路的逆推递归解法（O(n)） -> 添加备忘录的正向迭代解法 -> 备忘录简化为有限个变量只记录前后几个（SC降至O(1)）
+ */
+static int maxProfit2(int[] prices){
+    int i0,i1,im10=0;int im11=-prices[0];
+//    int[][] dp = new int[prices.length][2];
+//    dp[0][0]=0; dp[0][1]=-prices[0];
+    for (int i = 1; i < prices.length; i++) {
+//        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i]);
+//        dp[i][1] = Math.max(dp[i-1][1],  - prices[i]);
+        im10 = Math.max(im10, im11+prices[i]);
+        im11 = Math.max(im11, -prices[i]);
+    }
+    return im10;
+}
+/** LC122 买卖股票的最佳时机,不限交易次数
+ [7,1,5,3,6,4] -> 7
+ [1,2,3,4,5] -> 4
+ [7,6,4,3,1] -> 0
+此题降维思路（不降维也能解，底下就是）
+ 不限交易次数，甚至当天买当天卖也可以，盈利是0，所以可以认为 k->无穷大，k 与 k-1 近似，所以
+ dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i]);
+ dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i]);
+             = Math.max(dp[i-1][k][1], dp[i-1][k][0] - prices[i])
+ ====>
+ dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i]);
+ dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0] - prices[i]);
+ */
+static int maxProfitII(int[] prices){
+    int[][][] dp = new int[prices.length][prices.length/2][2];
+    for (int i = 0; i < prices.length/2; i++) {
+        dp[0][i][0] = 0;
+        dp[0][i][1] = -prices[0];
+    }
+    for (int i = 1; i < prices.length; i++) {
+        for (int k = 1; k < (prices.length/2); k++) {
+            dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i]);
+            dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i]);
+        }
+    }
+    return dp[prices.length-1][prices.length/2-1][0];
+}
+static int maxProfitII2(int[] prices){
+    int im1k0=0 ,im1k1=0,im1km10=-prices[0];
+//    int[][][] dp = new int[prices.length][prices.length/2][2];
+//    for (int i = 0; i < prices.length/2; i++) {
+//        dp[0][i][0] = 0;
+//        dp[0][i][1] = -prices[0];
+//    }
+    for (int i = 1; i < prices.length; i++) {
+        for (int k = 1; k < (prices.length/2); k++) {
+            im1k0 = Math.max(im1k0, im1k1+prices[i]);
+            im1k1 = Math.max(im1k1, im1km10 - prices[i]);
+//            dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i]);
+//            dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i]);
+        }
+    }
+    return im1k0;//dp[prices.length-1][prices.length/2-1][0];
+}
+/** LC309 最佳买卖股票时机含冷冻期
+ 不限交易次数，但卖后有冷静期1天
+ [1,2,3,0,2] -> 3
+ [1] -> 0
+ 冷静期1天，需要修改状态转移方程
+ dp[i][1]=Math.max(dp[])
+ 由于sell后有冷静期，buy前就要保证前一天是空仓(往前看，不是往后看)，所以修改的是 dp[i][1] 而不是 dp[i][0]
+ 之前的错误：dp[i][0]=Math.max(dp[i-1][0], dp[i-2][1] + prices[i])
+ 测试用例：
+ {1,2,3,0,2} - 3
+ {1,2,5,0,8} - 9
+ {1,2} - 1
+ {1} - 0
+ */
+static int maxProfitIII(int[] prices) {
+    if (prices.length <= 1) return 0;
+    int[][] dp = new int[prices.length][2];
+    dp[0][0]=0;dp[0][1]=-prices[0];
+    dp[1][0]=Math.max(0, prices[1]-prices[0]);
+    dp[1][1]=Math.max(-prices[0],-prices[1]);
+    for (int i = 2; i < prices.length; i++) {
+        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i]);
+        dp[i][1] = Math.max(dp[i-1][1], dp[i-2][0] - prices[i]);
+    }
+    return dp[prices.length-1][0];
+}
+/** LC714 股票最大收益-含手续费
+一次交易只收一次手续费,不限交易次数
+ 测试用例：
+ 2,{1,3,2,8,4,9} - 8  （1-8,4-9 交易盈利最多）
+ 3,{1,3,7,5,10,3} - 6 (1-10 盈利比两次手续费的 1-7,5-10盈利多)
+ */
+static int maxProfitIV(int[] prices, int fee) {
+    int[][] dp = new int[prices.length][2];
+    dp[0][0] = 0; dp[0][1]=-prices[0];
+    for (int i = 1; i < prices.length; i++) {
+        //手续费放在sell环节考虑
+        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i] - fee);
+        //如果将手续费放在buy环节考虑就要 dp[i-1][0] - prices[i] - fee
+        dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0] - prices[i]);
+    }
+    return dp[prices.length-1][0];
+}
+/** LC123 股票至多交易两次
+ 测试用例
+ {3,3,5,0,0,3,1,4} -> 6
+ {1,2,3,4,5} -> 4
+ {7,6,4,3,1} - 0
+ {1} - 0
+ */
+static int maxProfitV(int[] prices) {
+    int[][][] dp = new int[prices.length][2+1][2];
+    dp[0][0][0] = 0;dp[0][0][1]=0;
+    //注意base case是 i=0时所有j的情形
+    dp[0][1][0] = 0;dp[0][1][1]=-prices[0];
+    dp[0][2][0] = 0;dp[0][2][1]=-prices[0];
+    for (int i = 1; i < prices.length; i++) {
+//        for (int j = 1; j < 2+1; j++) {
+//            dp[i][j][0] = Math.max(dp[i-1][j][0], dp[i-1][j][1] + prices[i]);
+//            dp[i][j][1] = Math.max(dp[i-1][j][1], dp[i-1][j-1][0] - prices[i]);
+//        }
+        //上述for循环，观察可见 i 只与 i-1 的状态有关，ij不需要看i(j-1)的值
+        //所以for循环中j可以从大到小遍历
+        for (int j = 2; j > 0; j--) {
+            dp[i][j][0] = Math.max(dp[i-1][j][0], dp[i-1][j][1] + prices[i]);
+            dp[i][j][1] = Math.max(dp[i-1][j][1], dp[i-1][j-1][0] - prices[i]);
+        }//j从2减小也符合人的思路：刚开始交易时 j = 2，还剩2次交易机会
+    }
+    return dp[prices.length-1][2][0];
+}
+/*
+j是有限的2，还是可以简化状态转移方程的，全部列出即可
+j=2
+dp[i][2][0] = Math.max(dp[i-1][2][0], dp[i-1][2][1]+prices[i]);
+dp[i][2][1] = Math.max(dp[i-1][2][1], dp[i-1][1][0]-prices[i]);
+j=1
+dp[i][1][0] = Math.max(dp[i-1][1][0], dp[i-1][1][1]+prices[i]);
+dp[i][1][1] = Math.max(dp[i-1][1][1], dp[i-1][0][0]-prices[i]);
+            = Math.max(dp[i-1][1][1], -prices[i]);
+此时只有一个变量i了，继续按优化SC的思路简化
+dp[i][2][0] 可以视作 dp[i-1][2][0]的更新后值，两者使用同一个变量
+dp_2_0 = Math.max(dp_2_0, dp_2_1+prices[i]);
+dp_2_1 = Math.max(dp_2_1, dp_1_0-prices[i]);
+dp_1_0 = Math.max(dp_1_0, dp_1_1+prices[i]);
+dp_1_1 = Math.max(dp_1_1, -prices[i]);
+
+* */
+static int maxProfitV2(int[] prices) {
+    int dp_1_0 = 0;int dp_1_1=Integer.MIN_VALUE;
+    int dp_2_0=0;int dp_2_1=Integer.MIN_VALUE;//由于要max，可能出现赋值，所以起始值是Integer.MIN_VALUE
+    for (int i = 0; i < prices.length; i++) {//4个表达式的顺序可以调整
+        dp_1_1 = Math.max(dp_1_1, -prices[i]);
+        dp_1_0 = Math.max(dp_1_0, dp_1_1+prices[i]);
+        dp_2_0 = Math.max(dp_2_0, dp_2_1+prices[i]);
+        dp_2_1 = Math.max(dp_2_1, dp_1_0-prices[i]);
+    }
+    return dp_2_0;
+}
+/** LC188 买卖股票的最佳时机-k值不定
+k=2,{2,4,1} -> 2
+k=2,{3,2,6,5,0,3} -> 7
+ {3,3,5,0,0,3,1,4}
+ 三维数组在k值很大时会内存超限，需要简化
+ 状态方程的逻辑不包含当天买入当天卖出，所以k至多n/2,当k超过这个值时，就可以简化为不限交易次数的场景
+ */
+static int maxProfitCommon(int k, int[] prices) {
+    if (prices.length == 0) return 0;
+    //简化为不限交易次数的问题
+    if (k >= prices.length/2){
+        return maxProfitWithInfinityK(prices);
+    }
+    int[][][] dp = new int[prices.length][k+1][2];
+    for (int i = 0; i <= k; i++) {
+        dp[0][i][0]=0; dp[0][i][1]=-prices[0];
+    }
+    for (int i = 0; i < prices.length; i++) {
+        dp[i][0][0]=0; dp[i][0][1]=Integer.MIN_VALUE;
+    }
+    for (int i = 1; i < prices.length; i++) {
+        for (int j = k; j >= 1; j--) {
+            // j-1 究竟放在 -prices[i] (买入)还是卖出时有所讲究
+            //今天卖出时前天交易次数才减1得到的计算结果错误，结果总是 k-1 的最大利润
+            //dp[i][j][1] = Math.max(dp[i-1][j][1], dp[i-1][j][0]-prices[i]);
+            //dp[i][j][0] = Math.max(dp[i-1][j][0], dp[i-1][j-1][1]+prices[i]);
+            //今天买入时，前一天的最大交易次数就要 - 1
+            dp[i][j][1] = Math.max(dp[i-1][j][1], dp[i-1][j-1][0]-prices[i]);
+            dp[i][j][0] = Math.max(dp[i-1][j][0], dp[i-1][j][1]+prices[i]);
+
+        }
+    }
+    return dp[prices.length-1][k][0];
+}
+private static int maxProfitWithInfinityK(int[] prices){
+    int[][] dp = new int[prices.length][2];
+    dp[0][0] = 0; dp[0][1]=-prices[0];
+    for (int i = 1; i < prices.length; i++) {
+        dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0]-prices[i]);
+        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1]+prices[i]);
+    }
+    return dp[prices.length-1][0];
+}
+/** 股票最大收益问题终极版 - 限制交易次数、带手续费、冷冻期
+ */
+static int stockProfitUltimate(int[] prices, int maxK, int cooldown, int fee){
+    if (prices.length == 0) return 0;
+    //不限交易次数的版本，优化k特别大的场景，不然代码AC不通过
+    if (maxK >= prices.length / 2){
+        int[][] dp = new int[prices.length][2];
+        dp[0][0]=0;dp[0][1]=Integer.MIN_VALUE;
+        //cooldown 的引入，baseCase的初始化较多，此时的状态转移方程中，需要cooldown的那一项无实际意义，直接去掉
+        for (int i = 1; i <= cooldown; i++) {
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i] - fee);
+            dp[i][1] = Math.max(dp[i-1][1], -prices[i]);
+        }
+        for (int i = cooldown+1; i < prices.length; i++) {
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i]-fee);
+            dp[i][1] = Math.max(dp[i-1][1], dp[i-1-cooldown][0] - prices[i]);
+        }
+    }
+    int[][][] dp = new int[prices.length][maxK+1][2];
+    //初始化base case
+    for (int i = 0; i <= maxK; i++) {
+        dp[0][i][0] = 0; dp[0][i][1] = Integer.MIN_VALUE;
+    }
+    for (int i = 1; i <= cooldown; i++) {
+        for (int j = maxK; j > 0; j--) {
+            dp[i][j][0] = Math.max(dp[i-1][j][0], dp[i-1][j][1]+prices[i]-fee);
+            dp[i][j][1] = Math.max(dp[i-1][j][1], -prices[i]);
+        }
+    }
+    for (int i = cooldown+1; i < prices.length; i++) {
+        for (int j = maxK; j > 0; j--) {
+            dp[i][j][0] = Math.max(dp[i-1][j][0], dp[i-1][j][1] + prices[i] - fee);
+            dp[i][j][1] = Math.max(dp[i-1][j][1], dp[i-cooldown-1][j-1][0] - prices[i]);
+        }
+    }
+    return dp[prices.length-1][maxK][0];
+}
+/** 股票最大收益问题 - 仅允许一次交易,要求在O(N)复杂度内完成
+ * 不可以分别找最大最小值想减，这不是做空
+ */
+static int maxProfitOneShot(int[] prices){
+    if (prices.length == 0) return 0;
+    int minPrice = prices[0];
+    int maxProfit = 0;
+    for (int i = 1; i < prices.length; i++) {
+        minPrice = Math.min(minPrice, prices[i]);
+        maxProfit = Math.max(prices[i] - minPrice, maxProfit);
+    }
+    return maxProfit;
+}
+//endregion
+public static void main(String[] args) {
+    System.out.println(maxProfitOneShot(new int[]{1,2,5,3,8,0}));
 }
 
 
