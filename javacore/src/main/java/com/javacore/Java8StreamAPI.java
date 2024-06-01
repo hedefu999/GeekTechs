@@ -1,4 +1,4 @@
-package com.misc.newjavaapi;
+package com.javacore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -660,7 +660,7 @@ public class Java8StreamAPI {
 
     static class QuestionToResearch{
         public static void main(String[] args) {
-            //使用reduce似乎可以当作collect使用,但在并行流下会乱掉，未知原因 todo ???
+            //使用reduce似乎可以当作collect使用,但在并行流下会乱掉
             ArrayList<Integer> accResult = Stream.of(1,2,3,4).parallel().reduce(new ArrayList<>(), (accumulator, item) -> {
                 accumulator.add(item);
                 return accumulator;

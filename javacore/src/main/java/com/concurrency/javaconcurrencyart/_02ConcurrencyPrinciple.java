@@ -33,28 +33,30 @@ public class _02ConcurrencyPrinciple {
         static class Student2 {
             private String name;
             private int age;
-            private boolean married;
+            private boolean sex;
 
             public Student2(String name, Integer age, boolean sex) {
                 this.name = name;
                 this.age = age;
-                this.married = sex;
+                this.sex = sex;
             }
         }
 
         public static void main(String[] args) {
-            Student stu1 = new Student("jack is a good man",12,false);
-            JOLUtils.printObjectHeader(stu1);
-            System.out.println(Integer.toBinaryString(stu1.hashCode()));
-            System.out.println(Integer.toHexString(stu1.hashCode()));
+//            Student stu1 = new Student("jack is a good man",12,false);
+//            JOLUtils.printObjectHeader(stu1);
+//            System.out.println(Integer.toBinaryString(stu1.hashCode()));
+//            System.out.println(Integer.toHexString(stu1.hashCode()));
 
             Student2 stu2 = new Student2("name",12,false);
+            System.identityHashCode(stu2);
             JOLUtils.printObjectHeader(stu2);
+            System.out.println(Integer.toHexString(stu2.hashCode()));
 
 
-            Object plainObject = new Object();
-            JOLUtils.printObjectHeader(plainObject);
-            System.out.println(Integer.toHexString(plainObject.hashCode()));
+//            Object plainObject = new Object();
+//            JOLUtils.printObjectHeader(plainObject);
+//            System.out.println(Integer.toHexString(plainObject.hashCode()));
         }
 
     }
@@ -435,7 +437,7 @@ Maximum vm operation time (except for Exit VM operation)      0 ms
             }
         }
         void unlock(){
-            flag++;
+            flag++;//notify？？？
         }//支持公平锁，但不支持重入锁
     }
 

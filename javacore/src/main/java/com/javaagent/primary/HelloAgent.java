@@ -1,4 +1,4 @@
-package com.misc.javaagent.primary;
+package com.javaagent.primary;
 
 import java.lang.instrument.Instrumentation;
 /**

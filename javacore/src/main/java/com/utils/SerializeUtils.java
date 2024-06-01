@@ -1,4 +1,4 @@
-package com.javase;
+package com.utils;
 
 import java.io.*;
 

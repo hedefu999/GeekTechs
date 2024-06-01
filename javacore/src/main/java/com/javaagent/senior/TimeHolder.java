@@ -1,4 +1,4 @@
-package com.misc.javaagent.senior;
+package com.javaagent.senior;
 
 import java.util.HashMap;
 import java.util.Map;

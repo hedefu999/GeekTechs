@@ -1,4 +1,4 @@
-package com.misc.javaagent.senior;
+package com.javaagent.senior;
 
 import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassVisitor;

@@ -32,7 +32,8 @@
         <console name="console" target="SYSTEM_OUT">
             <thresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <!-- [%C.%M:%L] 太长了不要了 -->
-            <patternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-4level] [%t] >>> %msg%xEx%n"/>
+            <!-- yyyy-MM-dd 很多日志会拷贝到笔记里，以后看到年月日总会感慨，删掉了 -->
+            <patternLayout pattern="[%d{HH:mm:ss.SSS}] [%-4level] [%t] >>> %msg%xEx%n"/>
         </console>
         <!-- 设置日志格式并配置日志压缩策略，可以配置多个RollingFile存储不同级别的信息 -->
         <!--fileName与filePattern:未压缩的正在添加日志的文件/压缩文件-->

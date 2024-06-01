@@ -1,4 +1,4 @@
-package com.misc.javaagent.primary;
+package com.javaagent.primary;
 
 public class HelloWorld {
     public static void main(String[] args) {

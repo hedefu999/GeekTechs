@@ -79,7 +79,7 @@ public class _10AboutLockClass {
         static class Operation{
             private Lock lock = new ReentrantLock();
             private Condition condition = lock.newCondition();
-            public void await(){
+            public void await() {
                 try {
                     lock.lock();
                     System.out.println("before await");

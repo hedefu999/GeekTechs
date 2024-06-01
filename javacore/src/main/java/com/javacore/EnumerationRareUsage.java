@@ -1,6 +1,9 @@
-package com.javase;
+package com.javacore;
 
-public class Enumerations {
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class EnumerationRareUsage {
     /**
      * 枚举可以实现接口
      */
@@ -34,11 +37,6 @@ public class Enumerations {
             Operation(String symbol) {
                 this.symbol = symbol;
             }
-            public static void main(String[] args) {
-                double x = 4;
-                double y = 2;
-                Operation.PLUS.apply(x,y);
-            }
         }
         public enum ExtOperation implements IOperation {
             EXP("^") {
@@ -52,14 +50,10 @@ public class Enumerations {
                 this.symbol = symbol;
             }
         }
-        static class TestCases{
-            private static <T extends Enum<T> & IOperation> void testIOperationEnums(Class<T> operation, double x, double y){
-                for (T op : operation.getEnumConstants()) {
-                    op.apply(x, y);
-                }
-            }
-            public static void main(String[] args) {
-                testIOperationEnums(ExtOperation.class, 2,3);
+        public static void main(String[] args) {
+            for (Operation op : Operation.class.getEnumConstants()) {
+                double apply = op.apply(2, 3);
+                log.info("计算结果：{}", apply);
             }
         }
     }
@@ -73,14 +67,17 @@ public class Enumerations {
         }
         //使用枚举实现一个单例，枚举类DisabledBuffer只有一个枚举INSTANCE，所以接口实现方法可以放在父类DisabledBuffer，不必写在枚举里
         enum DisabledBuffer implements Buffer<Object>{
-            //INSTANCE2{
-            //    @Override
-            //    public int put(Object o) {
-            //        return super.put(o);
-            //    }
-            //},
+            INSTANCE2{
+                @Override
+                public int put(Object o) {
+                    return super.put(o);
+                }
+                @Override
+                public Object acquire() {
+                    return "SUCCESS";
+                }
+            },
             INSTANCE;
-
             @Override
             public int put(Object o) {
                 return 1;
@@ -92,6 +89,8 @@ public class Enumerations {
         }
         public static void main(String[] args) {
             DisabledBuffer instance = DisabledBuffer.INSTANCE;
+            log.info("使用外层实现方法的枚举：{} - {}", instance.put(""), instance.acquire());
+            log.info("使用独立实现的枚举： {} - {}", DisabledBuffer.INSTANCE2.put(""), DisabledBuffer.INSTANCE2.acquire());
         }
     }
 }
