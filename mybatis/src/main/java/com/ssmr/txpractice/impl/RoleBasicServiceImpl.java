@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service("roleBasicService")
@@ -19,7 +18,6 @@ public class RoleBasicServiceImpl implements RoleBasicService {
     private Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private RoleMapper roleMapper;
-    @PostConstruct
     public void init(){
         log.info("RoleBasicServiceImpl.init() ... ");
     }

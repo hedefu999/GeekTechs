@@ -1,7 +1,5 @@
 package com.concurrency.javaconcurrencyart;
 
-import com.sun.corba.se.impl.orbutil.threadpool.ThreadPoolImpl;
-
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
